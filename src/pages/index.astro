@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import TerminalLayout from '../layouts/TerminalLayout.astro';
+import ProjectEntry from '../components/ProjectEntry.astro';
+import { links, profile, site } from '../data/site';
+
+const allProjects = await getCollection('projects');
+const featured = allProjects
+	.filter((p) => p.data.featured)
+	.sort((a, b) => a.data.order - b.data.order);
+---
+
+<TerminalLayout>
+	<section aria-labelledby="whoami">
+		<p class="prompt">whoami</p>
+		<h1 id="whoami">{site.name} <span class="muted">· {links.github.replace('https://', '')}</span></h1>
+		<p>{profile.shortIntro}</p>
+		<p class="muted">{profile.currentStatus}</p>
+	</section>
+
+	<section aria-labelledby="status">
+		<p class="prompt">status</p>
+		<h2 id="status">Current focus</h2>
+		<ul>
+			{profile.focus.map((line) => <li>{line}</li>)}
+		</ul>
+		<p class="dim">Currently learning: {profile.currentlyLearning.join(', ')}</p>
+		<p class="dim">Looking for: {profile.lookingFor.join(', ')}</p>
+	</section>
+
+	<section aria-labelledby="projects">
+		<p class="prompt">ls projects</p>
+		<h2 id="projects">Featured projects</h2>
+		<ul class="project-list">
+			{featured.map((project) => <ProjectEntry project={project} />)}
+		</ul>
+		<p><a href="/projects">→ all projects</a></p>
+	</section>
+</TerminalLayout>

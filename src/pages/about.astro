@@ -1,0 +1,54 @@
+---
+import TerminalLayout from '../layouts/TerminalLayout.astro';
+import { profile, site } from '../data/site';
+---
+
+<TerminalLayout title="About" description={`About ${site.name} — ${profile.shortIntro}`}>
+	<p class="prompt">cat about.md</p>
+	<h1>About</h1>
+
+	<section aria-labelledby="who-i-am">
+		<h2 id="who-i-am">Who I am</h2>
+		<p>{profile.whoIAm}</p>
+	</section>
+
+	<section aria-labelledby="current-status">
+		<h2 id="current-status">Current status</h2>
+		<p>What I am doing:</p>
+		<p class="dim">{profile.currentStatus}</p>
+
+		<p>What I am focusing on:</p>
+		<ul>
+			{profile.focus.map((line) => <li>{line}</li>)}
+		</ul>
+
+		<p>What I am learning:</p>
+		<ul>
+			{profile.currentlyLearning.map((line) => <li>{line}</li>)}
+		</ul>
+
+		<p>What I am looking for:</p>
+		<ul>
+			{profile.lookingFor.map((line) => <li>{line}</li>)}
+		</ul>
+	</section>
+
+	<section aria-labelledby="interests">
+		<h2 id="interests">Technical interests</h2>
+		<ul>
+			{profile.interests.map((line) => <li>{line}</li>)}
+		</ul>
+	</section>
+
+	<section aria-labelledby="skills">
+		<h2 id="skills">Skills</h2>
+		<h3>Languages</h3>
+		<p>{profile.skills.languages.join(' · ')}</p>
+		<h3>Tools</h3>
+		<p>{profile.skills.tools.join(' · ')}</p>
+		<h3>Systems</h3>
+		<p>{profile.skills.systems.join(' · ')}</p>
+		<h3>Other</h3>
+		<p>{profile.skills.other.join(' · ')}</p>
+	</section>
+</TerminalLayout>

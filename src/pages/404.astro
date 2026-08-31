@@ -1,0 +1,10 @@
+---
+import TerminalLayout from '../layouts/TerminalLayout.astro';
+---
+
+<TerminalLayout title="404" description="Page not found.">
+	<p class="prompt">cat {Astro.url.pathname}</p>
+	<h1>404 — command not found</h1>
+	<p class="dim">bash: {Astro.url.pathname}: No such file or directory</p>
+	<p><a href="/">&larr; back home</a></p>
+</TerminalLayout>

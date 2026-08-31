@@ -1,0 +1,83 @@
+---
+import { getCollection, render } from 'astro:content';
+import TerminalLayout from '../../layouts/TerminalLayout.astro';
+
+export async function getStaticPaths() {
+	const projects = await getCollection('projects');
+	return projects.map((project) => ({
+		params: { id: project.id },
+		props: { project },
+	}));
+}
+
+const { project } = Astro.props;
+const { data } = project;
+const { Content } = await render(project);
+const hasGithub = data.github.length > 0;
+---
+
+<TerminalLayout title={data.title} description={data.description}>
+	<p><a href="/projects">&larr; projects</a></p>
+	<p class="prompt">cat {project.id}</p>
+	<h1>PROJECT: {data.title}</h1>
+	<div class="meta">
+		<span class={`status-${data.status}`}>STATUS: {data.status.toUpperCase()}</span>
+		<span>YEAR: {data.year}</span>
+	</div>
+	<p>{data.description}</p>
+
+	{
+		data.problem && (
+			<>
+				<h2>Problem</h2>
+				<p>{data.problem}</p>
+			</>
+		)
+	}
+	{
+		data.solution && (
+			<>
+				<h2>Solution</h2>
+				<p>{data.solution}</p>
+			</>
+		)
+	}
+
+	<Content />
+
+	{
+		data.technologies.length > 0 && (
+			<>
+				<h2>Stack</h2>
+				<ul>
+					{data.technologies.map((tech) => (
+						<li>{tech}</li>
+					))}
+				</ul>
+			</>
+		)
+	}
+
+	<h2>Links</h2>
+	<div class="project-links">
+		{
+			hasGithub ? (
+				<a href={data.github} target="_blank" rel="noopener noreferrer">
+					[GitHub]
+				</a>
+			) : (
+				<span class="dim">[private / on request]</span>
+			)
+		}
+		{data.demo && (
+			<a href={data.demo} target="_blank" rel="noopener noreferrer">
+				[Live Demo]
+			</a>
+		)}
+		{data.documentation && (
+			<a href={data.documentation} target="_blank" rel="noopener noreferrer">
+				[Documentation]
+			</a>
+		)}
+	</div>
+</TerminalLayout>

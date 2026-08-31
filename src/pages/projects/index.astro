@@ -1,0 +1,15 @@
+---
+import { getCollection } from 'astro:content';
+import TerminalLayout from '../../layouts/TerminalLayout.astro';
+import ProjectEntry from '../../components/ProjectEntry.astro';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<TerminalLayout title="Projects" description="All projects — systems programming, offensive security, and network tooling.">
+	<p class="prompt">ls -la projects/</p>
+	<h1>Projects</h1>
+	<ul class="project-list">
+		{projects.map((project) => <ProjectEntry project={project} />)}
+	</ul>
+</TerminalLayout>

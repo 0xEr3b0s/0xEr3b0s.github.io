@@ -1,0 +1,34 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+	project: CollectionEntry<'projects'>;
+	compact?: boolean;
+}
+
+const { project, compact = false } = Astro.props;
+const { id, data } = project;
+const hasGithub = data.github.length > 0;
+---
+
+<li class="project-entry">
+	<h3><span class="dim">$ cat</span> {data.title}</h3>
+	<div class="meta">
+		<span class={`status-${data.status}`}>STATUS: {data.status.toUpperCase()}</span>
+		<span>{data.year}</span>
+		{data.technologies.length > 0 && <span>{data.technologies.join(' / ')}</span>}
+	</div>
+	<p>{data.description}</p>
+	<div class="project-links">
+		{
+			hasGithub ? (
+				<a href={data.github} target="_blank" rel="noopener noreferrer">
+					[github]
+				</a>
+			) : (
+				<span class="dim">[private / on request]</span>
+			)
+		}
+		{!compact && <a href={`/projects/${id}`}>[details]</a>}
+	</div>
+</li>

@@ -1,0 +1,20 @@
+---
+import { nav } from '../data/site';
+---
+
+<header class="site-header">
+	<nav aria-label="Primary">
+		<a href="/" class="brand">[0xEr3b0s]</a>
+		{
+			nav.map((item) => (
+				<a
+					href={item.href}
+					target={item.external ? '_blank' : undefined}
+					rel={item.external ? 'noopener noreferrer' : undefined}
+				>
+					{item.label}
+				</a>
+			))
+		}
+	</nav>
+</header>
