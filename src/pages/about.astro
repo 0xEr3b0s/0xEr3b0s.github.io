@@ -1,54 +1,92 @@
 ---
+import figlet from 'figlet';
 import TerminalLayout from '../layouts/TerminalLayout.astro';
-import { profile, site } from '../data/site';
+import { links, profile, site } from '../data/site';
+
+const ref = `${site.name.toUpperCase()}(1)`;
+const year = new Date().getFullYear();
+
+let titleArt = '';
+try {
+	titleArt = figlet.textSync(site.name, { font: 'Classy', width: 400, whitespaceBreak: false });
+} catch (e) {
+	console.warn(`figlet failed for "${site.name}": ${e}`);
+	titleArt = '';
+}
 ---
 
 <TerminalLayout title="About" description={`About ${site.name} — ${profile.shortIntro}`}>
-	<p class="prompt">cat about.md</p>
-	<h1>About</h1>
+	<p><a href="/">&larr; home</a></p>
+	<p class="prompt">man {site.name}</p>
+	<h1 class="sr-only">About {site.name} — manual page</h1>
 
-	<section aria-labelledby="who-i-am">
-		<h2 id="who-i-am">Who I am</h2>
-		<p>{profile.whoIAm}</p>
-	</section>
+	<div class="man">
+		{titleArt && <pre class="man-banner" aria-hidden="true">{titleArt}</pre>}
 
-	<section aria-labelledby="current-status">
-		<h2 id="current-status">Current status</h2>
-		<p>What I am doing:</p>
-		<p class="dim">{profile.currentStatus}</p>
+		<div class="man-head" aria-hidden="true">
+			<span>{ref}</span>
+			<span>User Manual</span>
+			<span>{ref}</span>
+		</div>
 
-		<p>What I am focusing on:</p>
-		<ul>
-			{profile.focus.map((line) => <li>{line}</li>)}
-		</ul>
+		<section class="man-section">
+			<h2>NAME</h2>
+			<p class="man-body">{site.name} - {profile.shortIntro}</p>
+		</section>
 
-		<p>What I am learning:</p>
-		<ul>
-			{profile.currentlyLearning.map((line) => <li>{line}</li>)}
-		</ul>
+		<section class="man-section">
+			<h2>DESCRIPTION</h2>
+			<p class="man-body">{profile.whoIAm}</p>
+		</section>
 
-		<p>What I am looking for:</p>
-		<ul>
-			{profile.lookingFor.map((line) => <li>{line}</li>)}
-		</ul>
-	</section>
+		<section class="man-section">
+			<h2>STATUS</h2>
+			<div class="man-body">
+				<p>{profile.currentStatus}</p>
+				<p><span class="muted">Focus</span></p>
+				<ul>
+					{profile.focus.map((line) => <li>{line}</li>)}
+				</ul>
+				<p><span class="muted">Currently learning</span></p>
+				<ul>
+					{profile.currentlyLearning.map((line) => <li>{line}</li>)}
+				</ul>
+				<p><span class="muted">Looking for</span></p>
+				<ul>
+					{profile.lookingFor.map((line) => <li>{line}</li>)}
+				</ul>
+			</div>
+		</section>
 
-	<section aria-labelledby="interests">
-		<h2 id="interests">Technical interests</h2>
-		<ul>
-			{profile.interests.map((line) => <li>{line}</li>)}
-		</ul>
-	</section>
+		<section class="man-section">
+			<h2>INTERESTS</h2>
+			<ul class="man-body">
+				{profile.interests.map((line) => <li>{line}</li>)}
+			</ul>
+		</section>
 
-	<section aria-labelledby="skills">
-		<h2 id="skills">Skills</h2>
-		<h3>Languages</h3>
-		<p>{profile.skills.languages.join(' · ')}</p>
-		<h3>Tools</h3>
-		<p>{profile.skills.tools.join(' · ')}</p>
-		<h3>Systems</h3>
-		<p>{profile.skills.systems.join(' · ')}</p>
-		<h3>Other</h3>
-		<p>{profile.skills.other.join(' · ')}</p>
-	</section>
+		<section class="man-section">
+			<h2>SKILLS</h2>
+			<div class="man-body">
+				<p><span class="muted">Languages</span> {profile.skills.languages.join(' / ')}</p>
+				<p><span class="muted">Tools</span> {profile.skills.tools.join(' / ')}</p>
+				<p><span class="muted">Systems</span> {profile.skills.systems.join(' / ')}</p>
+				<p><span class="muted">Other</span> {profile.skills.other.join(' / ')}</p>
+			</div>
+		</section>
+
+		<section class="man-section">
+			<h2>SEE ALSO</h2>
+			<div class="man-body project-links">
+				<a href={links.github} target="_blank" rel="noopener noreferrer">[github]</a>
+				<a href="/projects">[projects]</a>
+			</div>
+		</section>
+
+		<div class="man-foot" aria-hidden="true">
+			<span>{site.name}</span>
+			<span>{year}</span>
+			<span>{ref}</span>
+		</div>
+	</div>
 </TerminalLayout>

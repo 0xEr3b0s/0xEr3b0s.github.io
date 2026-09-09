@@ -1,6 +1,8 @@
 ---
 import { getCollection, render } from 'astro:content';
+import figlet from 'figlet';
 import TerminalLayout from '../../layouts/TerminalLayout.astro';
+import { categories } from '../../data/site';
 
 export async function getStaticPaths() {
 	const projects = await getCollection('projects');
@@ -14,70 +16,97 @@ const { project } = Astro.props;
 const { data } = project;
 const { Content } = await render(project);
 const hasGithub = data.github.length > 0;
+
+const ref = `${project.id.toUpperCase()}(1)`;
+const categoryLabel = categories.find((c) => c.id === data.category)?.label ?? data.category;
+
+// ASCII-art banner of the title, generated at build. `width` is set high so a
+// long title stays on one line (the CSS makes it small and scrolls it).
+let titleArt = '';
+try {
+	titleArt = figlet.textSync(data.title, { font: 'Classy', width: 400, whitespaceBreak: false });
+} catch (e) {
+	console.warn(`figlet failed for "${data.title}": ${e}`);
+	titleArt = '';
+}
 ---
 
 <TerminalLayout title={data.title} description={data.description}>
 	<p><a href="/projects">&larr; projects</a></p>
-	<p class="prompt">cat {project.id}</p>
-	<h1>PROJECT: {data.title}</h1>
-	<div class="meta">
-		<span class={`status-${data.status}`}>STATUS: {data.status.toUpperCase()}</span>
-		<span>YEAR: {data.year}</span>
-	</div>
-	<p>{data.description}</p>
+	<p class="prompt">man {project.id}</p>
+	<h1 class="sr-only">{data.title} — manual page</h1>
 
-	{
-		data.problem && (
-			<>
-				<h2>Problem</h2>
-				<p>{data.problem}</p>
-			</>
-		)
-	}
-	{
-		data.solution && (
-			<>
-				<h2>Solution</h2>
-				<p>{data.solution}</p>
-			</>
-		)
-	}
+	<div class="man">
+		{titleArt && <pre class="man-banner" aria-hidden="true">{titleArt}</pre>}
 
-	<Content />
+		<div class="man-head" aria-hidden="true">
+			<span>{ref}</span>
+			<span>Projects Manual</span>
+			<span>{ref}</span>
+		</div>
 
-	{
-		data.technologies.length > 0 && (
-			<>
-				<h2>Stack</h2>
-				<ul>
-					{data.technologies.map((tech) => (
-						<li>{tech}</li>
-					))}
-				</ul>
-			</>
-		)
-	}
+		<section class="man-section">
+			<h2>NAME</h2>
+			<p class="man-body">{data.title} - {data.description}</p>
+		</section>
 
-	<h2>Links</h2>
-	<div class="project-links">
+		<section class="man-section">
+			<h2>SYNOPSIS</h2>
+			<p class="man-body">
+				<span class={`status-${data.status}`}>{data.status}</span>
+				<span class="dim"> // </span>{data.year}
+				<span class="dim"> // </span>{categoryLabel}
+			</p>
+		</section>
+
+		<section class="man-section">
+			<h2>DESCRIPTION</h2>
+			<div class="man-body">
+				{data.problem && <p>{data.problem}</p>}
+				{data.solution && <p>{data.solution}</p>}
+				<Content />
+			</div>
+		</section>
+
 		{
-			hasGithub ? (
-				<a href={data.github} target="_blank" rel="noopener noreferrer">
-					[GitHub]
-				</a>
-			) : (
-				<span class="dim">[private / on request]</span>
+			data.technologies.length > 0 && (
+				<section class="man-section">
+					<h2>STACK</h2>
+					<p class="man-body">{data.technologies.join(', ')}</p>
+				</section>
 			)
 		}
-		{data.demo && (
-			<a href={data.demo} target="_blank" rel="noopener noreferrer">
-				[Live Demo]
-			</a>
-		)}
-		{data.documentation && (
-			<a href={data.documentation} target="_blank" rel="noopener noreferrer">
-				[Documentation]
-			</a>
-		)}
+
+		<section class="man-section">
+			<h2>SEE ALSO</h2>
+			<div class="man-body project-links">
+				{
+					hasGithub ? (
+						<a href={data.github} target="_blank" rel="noopener noreferrer">
+							[github]
+						</a>
+					) : (
+						<span class="dim">[private / on request]</span>
+					)
+				}
+				{data.demo && (
+					<a href={data.demo} target="_blank" rel="noopener noreferrer">
+						[demo]
+					</a>
+				)}
+				{data.documentation && (
+					<a href={data.documentation} target="_blank" rel="noopener noreferrer">
+						[docs]
+					</a>
+				)}
+				<a href="/projects">[all projects]</a>
+			</div>
+		</section>
+
+		<div class="man-foot" aria-hidden="true">
+			<span>0xEr3b0s</span>
+			<span>{data.year}</span>
+			<span>{ref}</span>
+		</div>
 	</div>
 </TerminalLayout>

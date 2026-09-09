@@ -11,6 +11,29 @@ const featured = allProjects
 ---
 
 <TerminalLayout>
+	<section class="banner" aria-label="Login banner">
+		<p class="motd">last login: <span id="last-login">&mdash;</span></p>
+		<p class="motd">[ system: secure // focus: offensive security ]</p>
+	</section>
+
+	<script is:inline>
+		(function () {
+			var el = document.getElementById('last-login');
+			if (!el) return;
+			var fmt = function (d) {
+				return d.toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
+			};
+			var now = new Date();
+			try {
+				var prev = localStorage.getItem('lastVisit');
+				el.textContent = prev ? fmt(new Date(prev)) : 'first login';
+				localStorage.setItem('lastVisit', now.toISOString());
+			} catch (e) {
+				el.textContent = fmt(now);
+			}
+		})();
+	</script>
+
 	<section aria-labelledby="whoami">
 		<p class="prompt">whoami</p>
 		<h1 id="whoami">{site.name} <span class="muted">· {links.github.replace('https://', '')}</span></h1>

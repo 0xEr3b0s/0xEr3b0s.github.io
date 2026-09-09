@@ -443,6 +443,17 @@ th {
 	border: 0;
 }
 
+/* ---- Home page: MOTD login lines ---- */
+.banner {
+	margin: 0 0 1.5rem;
+}
+
+.motd {
+	color: var(--muted);
+	font-size: 0.85rem;
+	margin: 0.15rem 0;
+}
+
 /* ---- Project page: man-style layout ---- */
 .man-banner,
 .ascii-banner {
@@ -461,3 +472,59 @@ th {
 	overflow-x: auto;
 }
 
+.man-head,
+.man-foot {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 0.5rem 1rem;
+	color: var(--muted);
+	font-size: 0.8rem;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+}
+
+.man-head {
+	border-bottom: 1px solid var(--border);
+	padding-bottom: 0.5rem;
+	margin-bottom: 1.5rem;
+}
+
+.man-foot {
+	border-top: 1px solid var(--border);
+	padding-top: 0.5rem;
+	margin-top: 2rem;
+}
+
+.man-section {
+	margin-bottom: 1.25rem;
+}
+
+/* Keep SEE ALSO links left-aligned in man pages, even though .project-links
+   centres them on the cards. */
+.man .project-links {
+	justify-content: flex-start;
+}
+
+.man-section h2 {
+	margin: 0 0 0.35rem;
+	font-size: 0.95rem;
+	letter-spacing: 0.05em;
+	color: var(--foreground);
+	text-transform: uppercase;
+}
+
+.man-body {
+	margin: 0;
+	padding-left: 2.5rem;
+}
+
+.man-body > p:last-child {
+	margin-bottom: 0;
+}
+
+@media (max-width: 40rem) {
+	.man-body {
+		padding-left: 1.25rem;
+	}
+}
