@@ -29,8 +29,17 @@
 	box-sizing: border-box;
 }
 
+/* A hidden element stays hidden even when another rule sets its display
+   (e.g. .project-entry is display:flex, which would otherwise show it). */
+[hidden] {
+	display: none !important;
+}
+
 html {
 	color-scheme: dark;
+	/* Keep focused/anchored targets clear of the sticky header and footer. */
+	scroll-padding-top: 4rem;
+	scroll-padding-bottom: 5.5rem;
 }
 
 body {
@@ -42,6 +51,9 @@ body {
 	margin: 0;
 	padding: 0;
 	-webkit-font-smoothing: antialiased;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
 }
 
 ::selection {
@@ -53,6 +65,13 @@ main {
 	max-width: var(--max-width);
 	margin: 0 auto;
 	padding: 2rem 1.25rem 4rem;
+	flex: 1 0 auto;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+main.wide {
+	max-width: 96rem;
 }
 
 a {
@@ -171,6 +190,10 @@ th {
 
 .site-header {
 	border-bottom: 1px solid var(--border);
+	position: sticky;
+	top: 0;
+	z-index: 20;
+	background: var(--background);
 }
 
 .site-header nav {
@@ -178,6 +201,8 @@ th {
 	margin: 0 auto;
 	display: flex;
 	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
 	gap: 1.25rem;
 	padding: 1rem 1.25rem;
 	font-size: 0.9rem;
@@ -200,6 +225,11 @@ th {
 	border-top: 1px solid var(--border);
 	color: var(--muted);
 	font-size: 0.85rem;
+	position: sticky;
+	bottom: 0;
+	z-index: 20;
+	background: var(--background);
+	text-align: center;
 }
 
 .site-footer .inner {
@@ -217,9 +247,21 @@ th {
 	gap: 1rem;
 }
 
-@media (min-width: 48rem) {
+@media (min-width: 40rem) {
 	.project-list {
 		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (min-width: 64rem) {
+	main.wide .project-list {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media (min-width: 80rem) {
+	main.wide .project-list {
+		grid-template-columns: repeat(4, 1fr);
 	}
 }
 
