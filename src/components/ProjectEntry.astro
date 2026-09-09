@@ -9,16 +9,22 @@ interface Props {
 const { project, compact = false } = Astro.props;
 const { id, data } = project;
 const hasGithub = data.github.length > 0;
+// Pipe-delimited: '|' cannot appear in a tag, so multi-word techs
+// like "Argo CD" stay one token for the filter on /projects.
+const techList = data.technologies.map((t) => t.toLowerCase()).join('|');
 ---
 
-<li class="project-entry">
-	<h3><span class="dim">$ cat</span> {data.title}</h3>
+<li class="project-entry" data-category={data.category} data-techs={techList}>
+	<h3 class="project-title"><span class="dim">$ cat</span> {data.title}</h3>
 	<div class="meta">
-		<span class={`status-${data.status}`}>STATUS: {data.status.toUpperCase()}</span>
-		<span>{data.year}</span>
-		{data.technologies.length > 0 && <span>{data.technologies.join(' / ')}</span>}
+		<span class="legend-item">
+			<span class={`legend-swatch status-${data.status}`} aria-hidden="true">■</span>
+			<span class="legend-label">{data.status}</span>
+		</span>
+		<span class="meta-year">{data.year}</span>
 	</div>
-	<p>{data.description}</p>
+	{data.technologies.length > 0 && <p class="project-techs">{data.technologies.join(' / ')}</p>}
+	<p class="project-desc">{data.description}</p>
 	<div class="project-links">
 		{
 			hasGithub ? (

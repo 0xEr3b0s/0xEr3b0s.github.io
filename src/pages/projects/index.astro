@@ -1,15 +1,147 @@
 ---
 import { getCollection } from 'astro:content';
+import figlet from 'figlet';
 import TerminalLayout from '../../layouts/TerminalLayout.astro';
 import ProjectEntry from '../../components/ProjectEntry.astro';
+import { categories, statusLegend } from '../../data/site';
 
-const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+let titleArt = '';
+try {
+	titleArt = figlet.textSync('Projects', { font: 'Classy', width: 400, whitespaceBreak: false });
+} catch (e) {
+	console.warn(`figlet failed for "Projects": ${e}`);
+	titleArt = '';
+}
+
+const all = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+
+// Group projects into the sections defined in src/data/site.ts, in that order.
+// A category with no projects is skipped.
+const grouped = categories
+	.map((c) => ({ ...c, items: all.filter((p) => p.data.category === c.id) }))
+	.filter((g) => g.items.length > 0);
+
+// Technology tags for the grep filter bar. Only techs shared by at least two
+// projects are shown, so the bar stays short instead of listing every one-off.
+const techCounts = {};
+const techLabel = {};
+for (const p of all) {
+	for (const t of p.data.technologies) {
+		const key = t.toLowerCase();
+		techCounts[key] = (techCounts[key] ?? 0) + 1;
+		if (!(key in techLabel)) techLabel[key] = t;
+	}
+}
+const techs = Object.keys(techCounts)
+	.filter((key) => techCounts[key] >= 2)
+	.sort((a, b) => a.localeCompare(b))
+	.map((key) => techLabel[key]);
+
+// Only show statuses that actually occur, so the legend never lists two
+// entries that share the same colour.
+const usedStatuses = new Set(all.map((p) => p.data.status));
+const legend = statusLegend.filter((s) => usedStatuses.has(s.id));
 ---
 
-<TerminalLayout title="Projects" description="All projects — systems programming, offensive security, and network tooling.">
+<TerminalLayout
+	title="Projects"
+	description="All projects — systems programming, offensive security, and network tooling."
+	wide
+>
 	<p class="prompt">ls -la projects/</p>
-	<h1>Projects</h1>
-	<ul class="project-list">
-		{projects.map((project) => <ProjectEntry project={project} />)}
-	</ul>
+	<h1 class="sr-only">Projects</h1>
+	{titleArt && <pre class="ascii-banner" aria-hidden="true">{titleArt}</pre>}
+
+	<div class="status-legend" aria-label="Status colour key">
+		<span class="dim">legend:</span>
+		{
+			legend.map((s) => (
+				<span class="legend-item">
+					<span class={`legend-swatch status-${s.id}`} aria-hidden="true">■</span>
+					<span class="legend-label">{s.label}</span>
+				</span>
+			))
+		}
+	</div>
+
+	<div class="filter-bar" role="group" aria-label="Filter projects by technology">
+		<span class="dim">$ grep -i</span>
+		<button type="button" class="tag-chip is-active" data-tech="*" aria-pressed="true">all</button>
+		{
+			techs.map((t) => (
+				<button type="button" class="tag-chip" data-tech={t.toLowerCase()} aria-pressed="false">
+					{t}
+				</button>
+			))
+		}
+		<span class="filter-count dim" aria-live="polite"></span>
+	</div>
+
+	<div class="project-groups">
+		{
+			grouped.map((g) => (
+				<section class="cat-section" data-category={g.id}>
+					<h2 class="cat-header">
+						<span class="dim"># </span>
+						{g.label} <span class="cat-count dim">({g.items.length})</span>
+					</h2>
+					<ul class="project-list">
+						{g.items.map((project) => (
+							<ProjectEntry project={project} />
+						))}
+					</ul>
+				</section>
+			))
+		}
+	</div>
+
+	<p class="no-results dim" hidden>
+		no match. <button type="button" class="tag-chip" data-tech="*">reset</button>
+	</p>
+
+	<script is:inline>
+	(function () {
+		var bar = document.querySelector('.filter-bar');
+		if (!bar) return;
+		var cards = Array.prototype.slice.call(document.querySelectorAll('.project-entry'));
+		var sections = Array.prototype.slice.call(document.querySelectorAll('.cat-section'));
+		var chips = Array.prototype.slice.call(bar.querySelectorAll('.tag-chip'));
+		var count = document.querySelector('.filter-count');
+		var noResults = document.querySelector('.no-results');
+
+		function apply(tech) {
+			var visible = 0;
+			cards.forEach(function (card) {
+				var techs = (card.getAttribute('data-techs') || '').split('|');
+				var show = tech === '*' || techs.indexOf(tech) !== -1;
+				card.hidden = !show;
+				if (show) visible++;
+			});
+			sections.forEach(function (section) {
+				var any = section.querySelectorAll('.project-entry:not([hidden])').length > 0;
+				section.hidden = !any;
+			});
+			chips.forEach(function (chip) {
+				var on = chip.getAttribute('data-tech') === tech;
+				chip.classList.toggle('is-active', on);
+				chip.setAttribute('aria-pressed', on ? 'true' : 'false');
+			});
+			if (count) count.textContent = tech === '*' ? '' : visible + ' match' + (visible === 1 ? '' : 'es');
+			if (noResults) noResults.hidden = visible !== 0;
+		}
+
+		document.addEventListener('click', function (e) {
+			var chip = e.target.closest ? e.target.closest('.tag-chip') : null;
+			if (!chip) return;
+			apply(chip.getAttribute('data-tech') || '*');
+			// If focus landed on a hidden element (a hidden card, or the reset
+			// button inside the now-hidden .no-results), move it to a visible chip.
+			var active = document.activeElement;
+			if (!active || active === document.body || (active.closest && active.closest('[hidden]'))) {
+				var target = chip.closest && chip.closest('[hidden]') ? bar.querySelector('.tag-chip') : chip;
+				if (target) target.focus();
+			}
+		});
+	})();
+	</script>
 </TerminalLayout>

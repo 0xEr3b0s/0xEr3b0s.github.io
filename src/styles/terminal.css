@@ -226,25 +226,52 @@ th {
 .project-entry {
 	border: 1px solid var(--border);
 	padding: 1rem 1.25rem;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	text-align: center;
+}
+
+.project-title {
+	margin: 0 0 0.5rem;
+	font-size: 1rem;
 }
 
 .meta {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 0.5rem 1rem;
+	justify-content: center;
+	align-items: center;
+	gap: 0.35rem 1rem;
 	font-size: 0.85rem;
 	color: var(--muted);
-	margin: 0.5rem 0;
+	margin: 0 0 0.35rem;
+}
+
+.project-techs {
+	margin: 0 0 0.75rem;
+	font-size: 0.8rem;
+	color: var(--muted);
+}
+
+.project-desc {
+	margin: 0 0 1rem;
 }
 
 .project-links {
 	display: flex;
+	justify-content: center;
 	gap: 1rem;
-	margin-top: 0.75rem;
+	/* Pin links to the card bottom so every card's link row lines up. */
+	margin-top: auto;
 }
 
 .status-active {
 	color: var(--foreground);
+}
+
+.status-planned {
+	color: var(--muted);
 }
 
 .status-experimental,
@@ -274,3 +301,121 @@ th {
 		gap: 0.75rem 1rem;
 	}
 }
+
+/* ---- Projects: status colour legend ---- */
+.status-legend {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 0.4rem 1rem;
+	align-items: baseline;
+	margin: 0 0 1rem;
+	font-size: 0.8rem;
+}
+
+.legend-item {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 0.3rem;
+}
+
+/* The "■" glyph itself is the coloured square; it inherits the status colour
+   from the .status-* class and aligns on the text baseline. */
+.legend-label {
+	color: var(--muted);
+}
+
+/* ---- Projects: grep filter bar ---- */
+.filter-bar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	margin: 0 0 1.5rem;
+	padding-bottom: 1rem;
+	border-bottom: 1px solid var(--border);
+	font-size: 0.85rem;
+}
+
+.tag-chip {
+	font-family: inherit;
+	font-size: inherit;
+	color: var(--muted);
+	background: transparent;
+	border: 1px solid var(--border);
+	padding: 0.25rem 0.6rem;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 1.75rem;
+	min-width: 1.75rem;
+}
+
+.tag-chip:hover {
+	color: var(--foreground);
+	border-color: var(--muted);
+}
+
+.tag-chip.is-active {
+	color: var(--background);
+	background: var(--foreground);
+	border-color: var(--foreground);
+}
+
+.tag-chip:focus-visible {
+	outline: 2px solid var(--foreground);
+	outline-offset: 2px;
+}
+
+.filter-count {
+	width: 100%;
+	text-align: center;
+}
+
+/* ---- Projects: category sections ---- */
+.project-groups {
+	display: flex;
+	flex-direction: column;
+	gap: 2.5rem;
+}
+
+.cat-header {
+	margin: 0 0 1rem;
+	font-size: 1rem;
+	border-bottom: 1px solid var(--border);
+	padding-bottom: 0.4rem;
+}
+
+/* ---- Accessible-only text ---- */
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+/* ---- Project page: man-style layout ---- */
+.man-banner,
+.ascii-banner {
+	color: var(--foreground);
+	background: none;
+	border: none;
+	padding: 0;
+	/* Centre the block, but keep its lines left-aligned (text-align:left from the
+	   pre rule) so the multi-line art never breaks. */
+	width: fit-content;
+	max-width: 100%;
+	margin: 0 auto 1rem;
+	font-size: clamp(0.32rem, 1.1vw, 0.55rem);
+	line-height: 1;
+	white-space: pre;
+	overflow-x: auto;
+}
+
