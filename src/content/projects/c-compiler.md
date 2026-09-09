@@ -3,8 +3,9 @@ title: "c_compiler"
 description: "A C compiler written from scratch in C++ — lexer, parser and code generator, built incrementally with a test-driven approach."
 status: "active"
 year: 2026
+category: "systems"
 featured: false
-order: 11
+order: 15
 technologies:
   - C++
   - CMake

@@ -3,8 +3,9 @@ title: "Minishell"
 description: "A Unix shell implemented from scratch in C — parsing, pipes, redirections, builtins, job control and signal handling."
 status: "completed"
 year: 2025
+category: "systems"
 featured: false
-order: 12
+order: 16
 technologies:
   - C
   - Linux

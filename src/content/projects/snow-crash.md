@@ -3,6 +3,7 @@ title: "snow-crash"
 description: "A security wargame in the classic level-by-level ladder style — each level hides the next one's password inside a vulnerable program or script."
 status: "active"
 year: 2026
+category: "offensive"
 featured: true
 order: 2
 technologies:

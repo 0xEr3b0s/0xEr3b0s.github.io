@@ -3,6 +3,7 @@ title: "RainFall"
 description: "A binary-exploitation wargame — a ladder of vulnerable SUID binaries, each one a step toward the next."
 status: "active"
 year: 2026
+category: "offensive"
 featured: true
 order: 3
 technologies:

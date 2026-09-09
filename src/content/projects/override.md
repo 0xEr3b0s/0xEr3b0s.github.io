@@ -3,6 +3,7 @@ title: "Override"
 description: "A harder, better-defended binary-exploitation wargame — the sequel to RainFall."
 status: "active"
 year: 2026
+category: "offensive"
 featured: true
 order: 4
 technologies:

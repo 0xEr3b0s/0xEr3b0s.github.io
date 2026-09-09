@@ -6,8 +6,9 @@ const projects = defineCollection({
 	schema: z.object({
 		title: z.string(),
 		description: z.string(),
-		status: z.enum(['active', 'maintained', 'experimental', 'completed', 'archived']),
+		status: z.enum(['active', 'planned', 'maintained', 'experimental', 'completed', 'archived']),
 		year: z.number(),
+		category: z.enum(['offensive', 'network', 'systems', 'kernel', 'infra']).default('systems'),
 		featured: z.boolean().default(false),
 		order: z.number().default(0),
 		technologies: z.array(z.string()).default([]),

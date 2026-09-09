@@ -3,8 +3,9 @@ title: "ft_ping"
 description: "A reimplementation of ping using raw sockets and ICMP."
 status: "active"
 year: 2026
+category: "network"
 featured: false
-order: 5
+order: 10
 technologies:
   - C
   - ICMP

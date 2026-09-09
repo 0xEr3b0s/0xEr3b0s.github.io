@@ -48,3 +48,26 @@ export const nav = [
 	{ label: 'ABOUT', href: '/about' },
 	{ label: 'GITHUB', href: links.github, external: true },
 ];
+
+// Project categories, in display order. The `id` must match the `category`
+// field in a project's front-matter (see src/content.config.ts). To add,
+// rename or reorder a section on the /projects page, edit this list only.
+export const categories = [
+	{ id: 'offensive', label: 'Offensive security' },
+	{ id: 'network', label: 'Network' },
+	{ id: 'systems', label: 'Systems' },
+	{ id: 'kernel', label: 'Kernel' },
+	{ id: 'infra', label: 'Infrastructure' },
+];
+
+// Statuses shown in the colour legend on the /projects page, in display order.
+// Each `id` must match a `.status-<id>` rule in src/styles/terminal.css, which
+// gives it its colour, and one of the values allowed by the schema.
+export const statusLegend = [
+	{ id: 'active', label: 'active' },
+	{ id: 'planned', label: 'planned' },
+	{ id: 'completed', label: 'completed' },
+	{ id: 'experimental', label: 'experimental' },
+	{ id: 'maintained', label: 'maintained' },
+	{ id: 'archived', label: 'archived' },
+];

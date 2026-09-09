@@ -3,8 +3,9 @@ title: "Inception Of Things"
 description: "An introduction to lightweight Kubernetes — K3s clusters provisioned in Vagrant VMs, with a GitOps workflow on top."
 status: "active"
 year: 2026
+category: "infra"
 featured: false
-order: 13
+order: 17
 technologies:
   - Kubernetes
   - K3s

@@ -3,8 +3,9 @@ title: "KFS — kernel from scratch"
 description: "A small x86 kernel built up in stages: booting, memory segmentation, and paging-based memory management."
 status: "active"
 year: 2025
+category: "kernel"
 featured: false
-order: 10
+order: 14
 technologies:
   - C
   - x86

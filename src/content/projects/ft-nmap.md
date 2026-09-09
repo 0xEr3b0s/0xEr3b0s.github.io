@@ -3,8 +3,9 @@ title: "ft_nmap"
 description: "A reimplementation of a port scanner in the style of nmap."
 status: "active"
 year: 2026
+category: "network"
 featured: false
-order: 7
+order: 12
 technologies:
   - C
   - Networking
