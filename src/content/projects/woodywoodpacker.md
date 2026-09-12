@@ -6,12 +6,12 @@ year: 2026
 category: "offensive"
 featured: false
 order: 9
-github: "https://github.com/0xEr3b0s/woody_woodpacker"
 technologies:
   - Assembly
   - x86-64
   - ELF
   - Cryptography
+github: "https://github.com/0xEr3b0s/woody_woodpacker"
 ---
 
 A packer for ELF executables: it takes a working binary, encrypts its code, and
