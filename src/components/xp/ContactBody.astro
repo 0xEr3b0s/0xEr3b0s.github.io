@@ -5,27 +5,19 @@ import { links, profile } from '../../data/site';
 <div class="doc">
 	<dl class="contact-list">
 		<dt>GitHub</dt>
-		<dd><a href={links.github} target="_blank" rel="noopener noreferrer">{links.github.replace('https://', '')}</a></dd>
-		<dt>Email</dt>
-		<dd>
-			{
-				links.email ? (
-					<a href={`mailto:${links.email}`}>{links.email}</a>
-				) : (
-					<span class="contact-todo">à compléter</span>
-				)
-			}
-		</dd>
+		<dd><a href={links.github} target="_blank" rel="noopener noreferrer">{links.github.replace('https://', '')}<span class="sr-only"> (opens in new tab)</span></a></dd>
+		{
+			links.email && (
+				<>
+					<dt>Email</dt>
+					<dd>
+						<a href={`mailto:${links.email}`}>{links.email}</a>
+						<button type="button" class="copy-btn" data-copy={links.email}>Copy</button>
+					</dd>
+				</>
+			)
+		}
 		<dt>Location</dt>
 		<dd>{profile.location}</dd>
-		<dt>Status</dt>
-		<dd>{profile.currentStatus}</dd>
 	</dl>
 </div>
-
-<style>
-	.contact-todo {
-		color: #707070;
-		font-style: italic;
-	}
-</style>

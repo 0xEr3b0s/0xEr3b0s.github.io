@@ -23,9 +23,9 @@ solution: >
   on top of it, rather than pushing forward on an untested foundation.
 ---
 
-The most-starred project on my GitHub, and the one where I have spent the most time
-close to first principles: no parser generator, no borrowed IR, just a lexer, a
-hand-written parser and a code generator, built up and tested one stage at a time.
+The project where I have spent the most time close to first principles: no parser
+generator, no borrowed IR, just a lexer, a hand-written parser and a code generator,
+built up and tested one stage at a time.
 
 ## Current state
 

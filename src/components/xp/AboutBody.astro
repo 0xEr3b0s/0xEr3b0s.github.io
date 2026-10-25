@@ -12,7 +12,6 @@ const skills = [
 	['Languages', profile.skills.languages],
 	['Tools', profile.skills.tools],
 	['Systems', profile.skills.systems],
-	['Other', profile.skills.other],
 ] as const;
 ---
 
@@ -29,12 +28,6 @@ const skills = [
 
 	<Sub class="doc-sub">Currently learning</Sub>
 	<ul>{profile.currentlyLearning.map((l) => <li>{l}</li>)}</ul>
-
-	<Sub class="doc-sub">Looking for</Sub>
-	<ul>{profile.lookingFor.map((l) => <li>{l}</li>)}</ul>
-
-	<Sub class="doc-sub">Interests</Sub>
-	<ul>{profile.interests.map((l) => <li>{l}</li>)}</ul>
 
 	<Sub class="doc-sub">Skills</Sub>
 	<dl class="contact-list">

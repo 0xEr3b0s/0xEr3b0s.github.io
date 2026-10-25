@@ -28,22 +28,12 @@ export const profile = {
 		'Blue teaming fundamentals',
 		'Rust for security tooling',
 	],
-	lookingFor: ['Any cybersecurity internship — red teaming focus, open to blue teaming'],
-	interests: [
-		'Red teaming & offensive security',
-		'Binary exploitation & reverse engineering',
-		'Low-level & systems programming',
-		'Networking & network attacks',
-		'Blue teaming (learning)',
-		'Open source',
-	],
 	skills: {
 		languages: ['C', 'C++', 'Rust', 'Go', 'Python', 'Bash'],
 		tools: ['Git', 'GDB', 'Docker', 'CMake'],
 		systems: ['Linux', 'Networking'],
-		other: ['Offensive security'],
 	},
-	whoIAm: `I am 0xEr3b0s, a systems and offensive-security developer. I work close to the metal — C, C++, Rust — and I am drawn to the parts of a system most people never look at: memory, binaries, protocols, the machine underneath the abstraction. My focus is offensive security, red teaming in particular, though I stay open to blue-team work as a way to round out that understanding. I am currently looking for a cybersecurity internship, in any of these areas.`,
+	whoIAm: `I work close to the metal, in C, C++ and Rust, drawn to the parts of a system most people never look at: memory, binaries, protocols, the machine underneath the abstraction. Most of what I build starts by taking something apart to understand how it really works.`,
 };
 
 export const nav = [
@@ -63,14 +53,11 @@ export const categories = [
 	{ id: 'infra', label: 'Infrastructure' },
 ];
 
-// Statuses shown in the colour legend on the /projects page, in display order.
-// Each `id` must match a `.status-<id>` rule in src/styles/terminal.css, which
-// gives it its colour, and one of the values allowed by the schema.
+// Status buckets shown in the legend, in display order. Every project status
+// maps to one of these via statusBucket() in src/scripts/filter.ts; each `id`
+// matches a `.status-<id>` rule in src/styles/xp.css that gives it its colour.
 export const statusLegend = [
-	{ id: 'active', label: 'active' },
-	{ id: 'planned', label: 'planned' },
+	{ id: 'in-progress', label: 'in progress' },
 	{ id: 'completed', label: 'completed' },
-	{ id: 'experimental', label: 'experimental' },
-	{ id: 'maintained', label: 'maintained' },
-	{ id: 'archived', label: 'archived' },
+	{ id: 'planned', label: 'planned' },
 ];

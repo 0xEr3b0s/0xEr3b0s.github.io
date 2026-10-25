@@ -25,6 +25,8 @@ instead of directly between them.
 - **Interface and address discovery** — resolving local MAC, IP and interface details
   before the attack begins.
 
-Part of the same offensive-networking line as the scanning tools, and the classic
+It takes the ARP-poisoning idea I first built as the `inquisitor` module inside
+cybersecurity-lab and reworks it as a standalone tool, focused on clean raw-frame
+crafting at the link layer rather than the lab's broader toolkit. The classic
 demonstration of why unauthenticated layer-2 protocols cannot be trusted on a shared
 network.
