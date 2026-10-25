@@ -1,0 +1,21 @@
+---
+import Icon from './Icon.astro';
+---
+
+<div class="taskbar" role="toolbar" aria-label="Taskbar">
+	<button type="button" class="start-button" id="start-button" aria-expanded="false" aria-controls="start-menu">
+		<Icon name="flag" size={20} />
+		<span>start</span>
+	</button>
+	<noscript>
+		<nav class="taskbar-links" aria-label="Site">
+			<a href="/">Desktop</a>
+			<a href="/projects">Projects</a>
+			<a href="/about">About</a>
+		</nav>
+	</noscript>
+	<div class="taskbar-windows" id="taskbar-windows"></div>
+	<div class="tray">
+		<time class="tray-clock" id="clock"></time>
+	</div>
+</div>

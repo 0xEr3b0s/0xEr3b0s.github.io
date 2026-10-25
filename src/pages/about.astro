@@ -1,92 +1,19 @@
 ---
-import figlet from 'figlet';
-import TerminalLayout from '../layouts/TerminalLayout.astro';
-import { links, profile, site } from '../data/site';
-
-const ref = `${site.name.toUpperCase()}(1)`;
-const year = new Date().getFullYear();
-
-let titleArt = '';
-try {
-	titleArt = figlet.textSync(site.name, { font: 'Classy', width: 400, whitespaceBreak: false });
-} catch (e) {
-	console.warn(`figlet failed for "${site.name}": ${e}`);
-	titleArt = '';
-}
+import XpLayout from '../layouts/XpLayout.astro';
+import Window from '../components/xp/Window.astro';
+import AboutBody from '../components/xp/AboutBody.astro';
+import ContactBody from '../components/xp/ContactBody.astro';
+import { profile, site } from '../data/site';
 ---
 
-<TerminalLayout title="About" description={`About ${site.name} — ${profile.shortIntro}`}>
-	<p><a href="/">&larr; home</a></p>
-	<p class="prompt">man {site.name}</p>
-	<h1 class="sr-only">About {site.name} — manual page</h1>
-
-	<div class="man">
-		{titleArt && <pre class="man-banner" aria-hidden="true">{titleArt}</pre>}
-
-		<div class="man-head" aria-hidden="true">
-			<span>{ref}</span>
-			<span>User Manual</span>
-			<span>{ref}</span>
-		</div>
-
-		<section class="man-section">
-			<h2>NAME</h2>
-			<p class="man-body">{site.name} - {profile.shortIntro}</p>
-		</section>
-
-		<section class="man-section">
-			<h2>DESCRIPTION</h2>
-			<p class="man-body">{profile.whoIAm}</p>
-		</section>
-
-		<section class="man-section">
-			<h2>STATUS</h2>
-			<div class="man-body">
-				<p>{profile.currentStatus}</p>
-				<p><span class="muted">Focus</span></p>
-				<ul>
-					{profile.focus.map((line) => <li>{line}</li>)}
-				</ul>
-				<p><span class="muted">Currently learning</span></p>
-				<ul>
-					{profile.currentlyLearning.map((line) => <li>{line}</li>)}
-				</ul>
-				<p><span class="muted">Looking for</span></p>
-				<ul>
-					{profile.lookingFor.map((line) => <li>{line}</li>)}
-				</ul>
+<XpLayout title="About" description={`About ${site.name} - ${profile.shortIntro}`}>
+	<main class="page-stage">
+		<Window id="about" title="About" icon="user" mode="page">
+			<AboutBody level={1} />
+			<div class="doc" id="contact">
+				<h2 class="doc-sub">Contact</h2>
+				<ContactBody />
 			</div>
-		</section>
-
-		<section class="man-section">
-			<h2>INTERESTS</h2>
-			<ul class="man-body">
-				{profile.interests.map((line) => <li>{line}</li>)}
-			</ul>
-		</section>
-
-		<section class="man-section">
-			<h2>SKILLS</h2>
-			<div class="man-body">
-				<p><span class="muted">Languages</span> {profile.skills.languages.join(' / ')}</p>
-				<p><span class="muted">Tools</span> {profile.skills.tools.join(' / ')}</p>
-				<p><span class="muted">Systems</span> {profile.skills.systems.join(' / ')}</p>
-				<p><span class="muted">Other</span> {profile.skills.other.join(' / ')}</p>
-			</div>
-		</section>
-
-		<section class="man-section">
-			<h2>SEE ALSO</h2>
-			<div class="man-body project-links">
-				<a href={links.github} target="_blank" rel="noopener noreferrer">[github]</a>
-				<a href="/projects">[projects]</a>
-			</div>
-		</section>
-
-		<div class="man-foot" aria-hidden="true">
-			<span>{site.name}</span>
-			<span>{year}</span>
-			<span>{ref}</span>
-		</div>
-	</div>
-</TerminalLayout>
+		</Window>
+	</main>
+</XpLayout>

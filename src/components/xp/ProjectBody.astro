@@ -1,0 +1,82 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import type { RepoStat } from '../../data/github';
+import { categories } from '../../data/site';
+import StatusBadge from './StatusBadge.astro';
+
+interface Props {
+	project: CollectionEntry<'projects'>;
+	stat?: RepoStat;
+	/** Heading level of the project title; sub-headings use level + 1. */
+	level?: 1 | 2;
+}
+
+const { project, stat, level = 2 } = Astro.props;
+const { data } = project;
+const { Content } = await render(project);
+const Title = `h${level}` as 'h1' | 'h2';
+const Sub = `h${level + 1}` as 'h2' | 'h3';
+const categoryLabel = categories.find((c) => c.id === data.category)?.label ?? data.category;
+
+const datePart = stat?.lastActivity?.slice(0, 10) ?? '';
+const lastActivity = /^\d{4}-\d{2}-\d{2}$/.test(datePart) ? datePart : null;
+const facts: string[] = [];
+if (stat?.language) facts.push(stat.language);
+if (stat?.commits != null) facts.push(`${stat.commits.toLocaleString('en-US')} commits`);
+if (lastActivity) facts.push(`last activity ${lastActivity}`);
+if (stat?.stars != null) facts.push(`${stat.stars.toLocaleString('en-US')} stars`);
+---
+
+<article class="project-page">
+	<Title class="pp-title">{data.title}</Title>
+	<p class="pp-meta">
+		<StatusBadge status={data.status} />
+		<span>{data.year}</span>
+		<span>{categoryLabel}</span>
+	</p>
+	{
+		facts.length > 0 && (
+			<ul class="pp-stats" aria-label="Repository stats">
+				{facts.map((f) => (
+					<li>{f}</li>
+				))}
+			</ul>
+		)
+	}
+	{
+		data.problem && (
+			<section class="pp-section">
+				<Sub class="pp-sub">Problem</Sub>
+				<p>{data.problem}</p>
+			</section>
+		)
+	}
+	{
+		data.solution && (
+			<section class="pp-section">
+				<Sub class="pp-sub">Solution</Sub>
+				<p>{data.solution}</p>
+			</section>
+		)
+	}
+	<div class="pp-prose"><Content /></div>
+	{
+		data.technologies.length > 0 && (
+			<p class="pp-stack">
+				<strong>STACK</strong> <span class="mono">{data.technologies.join(', ')}</span>
+			</p>
+		)
+	}
+	<p class="pp-links">
+		{
+			data.github ? (
+				<a href={data.github} target="_blank" rel="noopener noreferrer">[github]</a>
+			) : (
+				<span class="pp-private">[private / on request]</span>
+			)
+		}
+		{data.demo && <a href={data.demo} target="_blank" rel="noopener noreferrer">[demo]</a>}
+		{data.documentation && <a href={data.documentation} target="_blank" rel="noopener noreferrer">[docs]</a>}
+		<a href="/projects" data-open="projects">[all projects]</a>
+	</p>
+</article>

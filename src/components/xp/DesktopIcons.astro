@@ -1,0 +1,25 @@
+---
+import { apps } from '../../config/desktop';
+import Icon from './Icon.astro';
+---
+
+<nav class="desktop-icons" aria-label="Desktop">
+	<ul>
+		{
+			apps.map((a) => (
+				<li>
+					<a
+						class="desktop-icon"
+						href={a.href}
+						data-open={a.windowId ?? undefined}
+						target={a.external ? '_blank' : undefined}
+						rel={a.external ? 'noopener noreferrer' : undefined}
+					>
+						<Icon name={a.icon} size={40} />
+						<span class="desktop-icon-label">{a.label}</span>
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</nav>

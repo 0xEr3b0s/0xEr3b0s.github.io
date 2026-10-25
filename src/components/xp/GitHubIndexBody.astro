@@ -1,0 +1,64 @@
+---
+import type { GitHubSnapshot } from '../../data/github-snapshot';
+import { getCollection } from 'astro:content';
+import { langClass, relativeAge } from '../../scripts/ghformat';
+import { rankRepos, slugFromUrl } from '../../scripts/ghrank';
+
+interface Props {
+	snapshot: GitHubSnapshot;
+	level?: 1 | 2;
+}
+
+const { snapshot, level = 2 } = Astro.props;
+const Title = `h${level}` as 'h1' | 'h2';
+const RepoTitle = `h${level + 1}` as 'h2' | 'h3';
+const now = new Date();
+
+const projects = await getCollection('projects');
+const curated = projects.flatMap((p) => {
+	const slug = slugFromUrl(p.data.github);
+	return slug ? [{ slug, featured: p.data.featured, order: p.data.order, id: p.id }] : [];
+});
+const repos = rankRepos(snapshot.repos, curated);
+const projectOf = (slug: string) => curated.find((c) => c.slug === slug.toLowerCase())?.id;
+---
+
+<div class="gh">
+	<div class="gh-listhead">
+		<Title class="gh-title">{snapshot.login}</Title>
+		<p class="gh-lead">
+			{snapshot.repos.length} public repositories.{' '}
+			<a href={snapshot.htmlUrl} target="_blank" rel="noopener noreferrer">View on github.com<span class="sr-only"> (opens in new tab)</span></a>
+		</p>
+	</div>
+	{
+		repos.length === 0 ? (
+			<p class="gh-note">Repositories are not available right now. <a href={snapshot.htmlUrl} target="_blank" rel="noopener noreferrer">Open github.com<span class="sr-only"> (opens in new tab)</span></a></p>
+		) : (
+			<ul class="gh-repos">
+				{repos.map((r) => (
+					<li class="gh-repo">
+						<RepoTitle class="gh-repo-name">
+							<a href={`/github/${r.name}`} data-gh-repo={r.name}>{r.name}</a>
+						</RepoTitle>
+						{r.description && <p class="gh-desc">{r.description}</p>}
+						{r.topics.length > 0 && (
+							<ul class="gh-topics" aria-label="Topics">
+								{r.topics.map((t) => <li class="gh-topic">{t}</li>)}
+							</ul>
+						)}
+						{projectOf(r.slug) && (
+							<p class="gh-xlink"><a href={`/projects/${projectOf(r.slug)}`} data-project={projectOf(r.slug)}>View in Projects</a></p>
+						)}
+						<p class="gh-meta">
+							{r.language && (<span class="gh-lang"><span class={`gh-dot ${langClass(r.language)}`} aria-hidden="true"></span>{r.language}</span>)}
+							<span><span aria-hidden="true">★ </span>{r.stars} stars</span>
+							<span>{r.forks} forks</span>
+							{r.pushedAt && <span>Updated {relativeAge(r.pushedAt, now)}</span>}
+						</p>
+					</li>
+				))}
+			</ul>
+		)
+	}
+</div>

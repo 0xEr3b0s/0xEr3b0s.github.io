@@ -1,62 +1,56 @@
 ---
 import { getCollection } from 'astro:content';
-import TerminalLayout from '../layouts/TerminalLayout.astro';
-import ProjectEntry from '../components/ProjectEntry.astro';
-import { links, profile, site } from '../data/site';
+import XpLayout from '../layouts/XpLayout.astro';
+import Window from '../components/xp/Window.astro';
+import DesktopIcons from '../components/xp/DesktopIcons.astro';
+import ExplorerList from '../components/xp/ExplorerList.astro';
+import ProjectBody from '../components/xp/ProjectBody.astro';
+import AboutBody from '../components/xp/AboutBody.astro';
+import ContactBody from '../components/xp/ContactBody.astro';
+import BrowserFrame from '../components/xp/BrowserFrame.astro';
+import GitHubIndexBody from '../components/xp/GitHubIndexBody.astro';
+import { getRepoStats } from '../data/github';
+import { getGitHubSnapshot } from '../data/github-snapshot';
+import { site } from '../data/site';
 
-const allProjects = await getCollection('projects');
-const featured = allProjects
-	.filter((p) => p.data.featured)
-	.sort((a, b) => a.data.order - b.data.order);
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const stats = await getRepoStats(projects.map((p) => p.data.github).filter(Boolean));
+const snapshot = await getGitHubSnapshot(site.handle);
 ---
 
-<TerminalLayout>
-	<section class="banner" aria-label="Login banner">
-		<p class="motd">last login: <span id="last-login">&mdash;</span></p>
-		<p class="motd">[ system: secure // focus: offensive security ]</p>
-	</section>
+<XpLayout desktop>
+	<main class="desktop" id="desktop">
+		<h1 class="sr-only">0xEr3b0s - desktop</h1>
+		<DesktopIcons />
+		<div class="windows" id="windows"></div>
+	</main>
 
-	<script is:inline>
-		(function () {
-			var el = document.getElementById('last-login');
-			if (!el) return;
-			var fmt = function (d) {
-				return d.toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
-			};
-			var now = new Date();
-			try {
-				var prev = localStorage.getItem('lastVisit');
-				el.textContent = prev ? fmt(new Date(prev)) : 'first login';
-				localStorage.setItem('lastVisit', now.toISOString());
-			} catch (e) {
-				el.textContent = fmt(now);
-			}
-		})();
-	</script>
-
-	<section aria-labelledby="whoami">
-		<p class="prompt">whoami</p>
-		<h1 id="whoami">{site.name} <span class="muted">· {links.github.replace('https://', '')}</span></h1>
-		<p>{profile.shortIntro}</p>
-		<p class="muted">{profile.currentStatus}</p>
-	</section>
-
-	<section aria-labelledby="status">
-		<p class="prompt">status</p>
-		<h2 id="status">Current focus</h2>
-		<ul>
-			{profile.focus.map((line) => <li>{line}</li>)}
-		</ul>
-		<p class="dim">Currently learning: {profile.currentlyLearning.join(', ')}</p>
-		<p class="dim">Looking for: {profile.lookingFor.join(', ')}</p>
-	</section>
-
-	<section aria-labelledby="projects">
-		<p class="prompt">ls projects</p>
-		<h2 id="projects">Featured projects</h2>
-		<ul class="project-list">
-			{featured.map((project) => <ProjectEntry project={project} />)}
-		</ul>
-		<p><a href="/projects">→ all projects</a></p>
-	</section>
-</TerminalLayout>
+	<template id="tpl-index">
+		<ExplorerList projects={projects} level={2} />
+	</template>
+	<template id="tpl-gh-index" data-login={snapshot.login} data-repos={snapshot.repos.map((r) => r.name).join(',')}>
+		<GitHubIndexBody snapshot={snapshot} level={2} />
+	</template>
+	<template id="tpl-win-ie">
+		<Window id="ie" title="Internet Explorer" icon="ie" hidden>
+			<BrowserFrame mode="app" />
+		</Window>
+	</template>
+	<template id="tpl-win-about">
+		<Window id="about" title="About" icon="user" hidden>
+			<AboutBody level={2} />
+		</Window>
+	</template>
+	<template id="tpl-win-contact">
+		<Window id="contact" title="Contact" icon="mail" hidden>
+			<ContactBody />
+		</Window>
+	</template>
+	{
+		projects.map((p) => (
+			<template data-project={p.id} data-title={p.data.title}>
+				<ProjectBody project={p} stat={stats[p.data.github]} level={2} />
+			</template>
+		))
+	}
+</XpLayout>

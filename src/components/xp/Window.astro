@@ -1,0 +1,76 @@
+---
+import Icon from './Icon.astro';
+import { fallbackFrame, frames, type IconName } from '../../config/desktop';
+
+interface Props {
+	id: string;
+	title: string;
+	icon: IconName;
+	/** 'window' is a managed desktop window; 'page' is the static routable variant. */
+	mode?: 'window' | 'page';
+	/** Taskbar label; defaults to the title. */
+	label?: string;
+	hidden?: boolean;
+}
+
+const { id, title, icon, mode = 'window', label = title, hidden = false } = Astro.props;
+const frame = frames[id] ?? fallbackFrame;
+const titleId = `${id}-title`;
+---
+
+{
+	mode === 'window' ? (
+		<section
+			class="xp-window"
+			id={`win-${id}`}
+			role="dialog"
+			aria-labelledby={titleId}
+			tabindex="-1"
+			data-window={id}
+			data-label={label}
+			data-x={frame.x}
+			data-y={frame.y}
+			data-w={frame.w}
+			data-h={frame.h}
+			hidden={hidden}
+		>
+			<header class="xp-titlebar">
+				<Icon name={icon} size={16} />
+				<span class="xp-title" id={titleId}>
+					{title}
+				</span>
+				<div class="xp-controls">
+					<button type="button" class="xp-btn" data-action="minimize" aria-label={`Minimize ${title}`}>
+						<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 8h6" class="glyph" /></svg>
+					</button>
+					<button type="button" class="xp-btn" data-action="maximize" aria-label={`Maximize ${title}`}>
+						<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><rect x="1" y="1" width="8" height="8" class="glyph" /></svg>
+					</button>
+					<button type="button" class="xp-btn xp-btn-close" data-action="close" aria-label={`Close ${title}`}>
+						<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 1l8 8M9 1l-8 8" class="glyph" /></svg>
+					</button>
+				</div>
+			</header>
+			<div class="xp-content">
+				<slot />
+			</div>
+		</section>
+	) : (
+		<section class="xp-window is-page is-active" aria-labelledby={titleId}>
+			<header class="xp-titlebar">
+				<Icon name={icon} size={16} />
+				<span class="xp-title" id={titleId}>
+					{title}
+				</span>
+				<div class="xp-controls xp-controls-static">
+					<a class="xp-btn xp-btn-close" href="/" aria-label="Close and return to the desktop">
+						<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 1l8 8M9 1l-8 8" class="glyph" /></svg>
+					</a>
+				</div>
+			</header>
+			<div class="xp-content">
+				<slot />
+			</div>
+		</section>
+	)
+}

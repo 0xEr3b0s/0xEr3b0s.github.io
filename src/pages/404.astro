@@ -1,10 +1,16 @@
 ---
-import TerminalLayout from '../layouts/TerminalLayout.astro';
+import XpLayout from '../layouts/XpLayout.astro';
+import Window from '../components/xp/Window.astro';
 ---
 
-<TerminalLayout title="404" description="Page not found.">
-	<p class="prompt">cat {Astro.url.pathname}</p>
-	<h1>404 — command not found</h1>
-	<p class="dim">bash: {Astro.url.pathname}: No such file or directory</p>
-	<p><a href="/">&larr; back home</a></p>
-</TerminalLayout>
+<XpLayout title="404" description="Page not found.">
+	<main class="page-stage">
+		<Window id="error" title="Error" icon="doc" mode="page">
+			<div class="doc">
+				<h1 class="doc-title">404 - page not found</h1>
+				<p>The page <span class="mono">{Astro.url.pathname}</span> does not exist.</p>
+				<p class="pp-links"><a href="/">[back to the desktop]</a></p>
+			</div>
+		</Window>
+	</main>
+</XpLayout>

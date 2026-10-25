@@ -8,6 +8,9 @@ export const site = {
 
 export const links = {
 	github: 'https://github.com/0xEr3b0s',
+	// Fill in later: once set, the Contact section shows it as a mailto link
+	// instead of the "à compléter" placeholder.
+	email: '',
 };
 
 export const profile = {

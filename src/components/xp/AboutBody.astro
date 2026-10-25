@@ -1,0 +1,48 @@
+---
+import { links, profile, site } from '../../data/site';
+
+interface Props {
+	level?: 1 | 2;
+}
+
+const { level = 2 } = Astro.props;
+const H1 = `h${level}` as 'h1' | 'h2';
+const Sub = `h${level + 1}` as 'h2' | 'h3';
+const skills = [
+	['Languages', profile.skills.languages],
+	['Tools', profile.skills.tools],
+	['Systems', profile.skills.systems],
+	['Other', profile.skills.other],
+] as const;
+---
+
+<div class="doc">
+	<H1 class="doc-title">About {site.name}</H1>
+	<p class="doc-lead">{profile.shortIntro}</p>
+	<p>{profile.whoIAm}</p>
+
+	<Sub class="doc-sub">Status</Sub>
+	<p>{profile.currentStatus}</p>
+
+	<Sub class="doc-sub">Focus</Sub>
+	<ul>{profile.focus.map((l) => <li>{l}</li>)}</ul>
+
+	<Sub class="doc-sub">Currently learning</Sub>
+	<ul>{profile.currentlyLearning.map((l) => <li>{l}</li>)}</ul>
+
+	<Sub class="doc-sub">Looking for</Sub>
+	<ul>{profile.lookingFor.map((l) => <li>{l}</li>)}</ul>
+
+	<Sub class="doc-sub">Interests</Sub>
+	<ul>{profile.interests.map((l) => <li>{l}</li>)}</ul>
+
+	<Sub class="doc-sub">Skills</Sub>
+	<dl class="contact-list">
+		{skills.map(([label, items]) => (<><dt>{label}</dt><dd class="mono">{items.join(' / ')}</dd></>))}
+	</dl>
+
+	<p class="pp-links">
+		<a href={links.github} target="_blank" rel="noopener noreferrer">[github]</a>
+		<a href="/projects" data-open="projects">[projects]</a>
+	</p>
+</div>

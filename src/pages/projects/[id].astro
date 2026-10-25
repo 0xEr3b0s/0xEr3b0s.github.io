@@ -1,112 +1,26 @@
 ---
-import { getCollection, render } from 'astro:content';
-import figlet from 'figlet';
-import TerminalLayout from '../../layouts/TerminalLayout.astro';
-import { categories } from '../../data/site';
+import { getCollection } from 'astro:content';
+import XpLayout from '../../layouts/XpLayout.astro';
+import Window from '../../components/xp/Window.astro';
+import BrowserFrame from '../../components/xp/BrowserFrame.astro';
+import ProjectBody from '../../components/xp/ProjectBody.astro';
+import { getRepoStats } from '../../data/github';
 
 export async function getStaticPaths() {
 	const projects = await getCollection('projects');
-	return projects.map((project) => ({
-		params: { id: project.id },
-		props: { project },
-	}));
+	return projects.map((project) => ({ params: { id: project.id }, props: { project } }));
 }
 
 const { project } = Astro.props;
-const { data } = project;
-const { Content } = await render(project);
-const hasGithub = data.github.length > 0;
-
-const ref = `${project.id.toUpperCase()}(1)`;
-const categoryLabel = categories.find((c) => c.id === data.category)?.label ?? data.category;
-
-// ASCII-art banner of the title, generated at build. `width` is set high so a
-// long title stays on one line (the CSS makes it small and scrolls it).
-let titleArt = '';
-try {
-	titleArt = figlet.textSync(data.title, { font: 'Classy', width: 400, whitespaceBreak: false });
-} catch (e) {
-	console.warn(`figlet failed for "${data.title}": ${e}`);
-	titleArt = '';
-}
+const stats = project.data.github ? await getRepoStats([project.data.github]) : {};
 ---
 
-<TerminalLayout title={data.title} description={data.description}>
-	<p><a href="/projects">&larr; projects</a></p>
-	<p class="prompt">man {project.id}</p>
-	<h1 class="sr-only">{data.title} — manual page</h1>
-
-	<div class="man">
-		{titleArt && <pre class="man-banner" aria-hidden="true">{titleArt}</pre>}
-
-		<div class="man-head" aria-hidden="true">
-			<span>{ref}</span>
-			<span>Projects Manual</span>
-			<span>{ref}</span>
-		</div>
-
-		<section class="man-section">
-			<h2>NAME</h2>
-			<p class="man-body">{data.title} - {data.description}</p>
-		</section>
-
-		<section class="man-section">
-			<h2>SYNOPSIS</h2>
-			<p class="man-body">
-				<span class={`status-${data.status}`}>{data.status}</span>
-				<span class="dim"> // </span>{data.year}
-				<span class="dim"> // </span>{categoryLabel}
-			</p>
-		</section>
-
-		<section class="man-section">
-			<h2>DESCRIPTION</h2>
-			<div class="man-body">
-				{data.problem && <p>{data.problem}</p>}
-				{data.solution && <p>{data.solution}</p>}
-				<Content />
-			</div>
-		</section>
-
-		{
-			data.technologies.length > 0 && (
-				<section class="man-section">
-					<h2>STACK</h2>
-					<p class="man-body">{data.technologies.join(', ')}</p>
-				</section>
-			)
-		}
-
-		<section class="man-section">
-			<h2>SEE ALSO</h2>
-			<div class="man-body project-links">
-				{
-					hasGithub ? (
-						<a href={data.github} target="_blank" rel="noopener noreferrer">
-							[github]
-						</a>
-					) : (
-						<span class="dim">[private / on request]</span>
-					)
-				}
-				{data.demo && (
-					<a href={data.demo} target="_blank" rel="noopener noreferrer">
-						[demo]
-					</a>
-				)}
-				{data.documentation && (
-					<a href={data.documentation} target="_blank" rel="noopener noreferrer">
-						[docs]
-					</a>
-				)}
-				<a href="/projects">[all projects]</a>
-			</div>
-		</section>
-
-		<div class="man-foot" aria-hidden="true">
-			<span>0xEr3b0s</span>
-			<span>{data.year}</span>
-			<span>{ref}</span>
-		</div>
-	</div>
-</TerminalLayout>
+<XpLayout title={project.data.title} description={project.data.description}>
+	<main class="page-stage">
+		<Window id="ie" title="Internet Explorer" icon="ie" mode="page">
+			<BrowserFrame mode="page" address={`http://0xer3b0s/projects/${project.id}`}>
+				<ProjectBody project={project} stat={stats[project.data.github]} level={1} />
+			</BrowserFrame>
+		</Window>
+	</main>
+</XpLayout>

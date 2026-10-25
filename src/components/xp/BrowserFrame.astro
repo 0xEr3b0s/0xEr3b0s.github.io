@@ -1,0 +1,56 @@
+---
+interface Props {
+	/** 'app' = interactive buttons driven by the window manager; 'page' = static links. */
+	mode: 'app' | 'page';
+	address?: string;
+	/** Page-mode Back target. */
+	back?: string;
+}
+
+const { mode, address = 'http://0xer3b0s/', back = '/projects' } = Astro.props;
+const menus = ['File', 'Edit', 'View', 'Favorites', 'Tools', 'Help'];
+const tools = [
+	{ action: 'ie-back', label: 'Back', href: back, path: 'M12 5l-6 7 6 7M6 12h12', page: 'link' },
+	{ action: 'ie-forward', label: 'Forward', href: '', path: 'M12 5l6 7-6 7M18 12H6', page: 'off' },
+	{ action: 'ie-refresh', label: 'Refresh', href: '', path: 'M18 8a7 7 0 10 1 6M18 3v5h-5', page: 'self' },
+	{ action: 'ie-home', label: 'Home', href: '/', path: 'M4 12l8-7 8 7M6 11v8h12v-8', page: 'link' },
+] as const;
+---
+
+<div class="ie">
+	<div class="ie-menubar" aria-hidden="true">
+		{menus.map((m) => <span class="ie-menu">{m}</span>)}
+	</div>
+	<div class="ie-toolbar">
+		{
+			tools.map((t) => {
+				const inner = (
+					<>
+						<svg class="ie-tool-icon" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" class="ie-tool-disc" /><path d={t.path} class="ie-tool-path" /></svg>
+						<span class="ie-tool-label">{t.label}</span>
+					</>
+				);
+				if (mode === 'app') return <button type="button" class="ie-tool" data-action={t.action} aria-label={t.label}>{inner}</button>;
+				if (t.page === 'off') return <button type="button" class="ie-tool" disabled aria-label={t.label}>{inner}</button>;
+				return <a class="ie-tool" aria-label={t.label} href={t.page === 'self' ? Astro.url.pathname : t.href}>{inner}</a>;
+			})
+		}
+	</div>
+	<form class="ie-address" action="/projects" data-ie-form={mode === 'app' ? '' : undefined}>
+		<label class="ie-address-label" for={`ie-address-${mode}`}>Address</label>
+		<input
+			id={`ie-address-${mode}`}
+			class="ie-address-input mono"
+			type="text"
+			value={address}
+			readonly={mode === 'page'}
+			spellcheck="false"
+			autocomplete="off"
+		/>
+		{mode === 'app' ? <button type="submit" class="ie-go">Go</button> : <a class="ie-go" href="/projects">Go</a>}
+	</form>
+	{mode === 'app' && <p class="sr-only ie-status" role="status" aria-live="polite"></p>}
+	<div class="ie-body" tabindex="0" role="region" aria-label="Page content">
+		<slot />
+	</div>
+</div>

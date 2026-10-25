@@ -1,0 +1,20 @@
+---
+import XpLayout from '../../layouts/XpLayout.astro';
+import Window from '../../components/xp/Window.astro';
+import BrowserFrame from '../../components/xp/BrowserFrame.astro';
+import GitHubIndexBody from '../../components/xp/GitHubIndexBody.astro';
+import { getGitHubSnapshot } from '../../data/github-snapshot';
+import { site } from '../../data/site';
+
+const snapshot = await getGitHubSnapshot(site.handle);
+---
+
+<XpLayout title="GitHub" description={`Public repositories by ${site.name}.`}>
+	<main class="page-stage">
+		<Window id="ie" title="Internet Explorer" icon="ie" mode="page">
+			<BrowserFrame mode="page" address={snapshot.htmlUrl} back="/">
+				<GitHubIndexBody snapshot={snapshot} level={1} />
+			</BrowserFrame>
+		</Window>
+	</main>
+</XpLayout>

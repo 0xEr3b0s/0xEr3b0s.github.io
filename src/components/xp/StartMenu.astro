@@ -1,0 +1,41 @@
+---
+import { apps } from '../../config/desktop';
+import { site } from '../../data/site';
+import Icon from './Icon.astro';
+
+const windowApps = apps.filter((a) => !a.external);
+const linkApps = apps.filter((a) => a.external);
+---
+
+<div class="start-menu" id="start-menu" hidden>
+	<div class="start-user">
+		<span class="start-avatar"><Icon name="user" size={40} /></span>
+		<span class="start-username">{site.handle}</span>
+	</div>
+	<div class="start-columns">
+		<ul class="start-col start-col-main">
+			{
+				windowApps.map((a) => (
+					<li>
+						<a class="start-item" href={a.href} data-open={a.windowId ?? undefined}>
+							<Icon name={a.icon} size={32} />
+							<span>{a.label}</span>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+		<ul class="start-col start-col-side">
+			{
+				linkApps.map((a) => (
+					<li>
+						<a class="start-item" href={a.href} data-open={a.windowId ?? undefined} target="_blank" rel="noopener noreferrer">
+							<Icon name={a.icon} size={24} />
+							<span>{a.label}</span>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</div>

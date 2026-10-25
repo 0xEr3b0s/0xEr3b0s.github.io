@@ -1,0 +1,34 @@
+---
+import XpLayout from '../../layouts/XpLayout.astro';
+import Window from '../../components/xp/Window.astro';
+import BrowserFrame from '../../components/xp/BrowserFrame.astro';
+import GitHubRepoBody from '../../components/xp/GitHubRepoBody.astro';
+import { getGitHubSnapshot } from '../../data/github-snapshot';
+import { site } from '../../data/site';
+
+export async function getStaticPaths() {
+	const snapshot = await getGitHubSnapshot(site.handle);
+	return snapshot.repos.map((repo) => ({
+		params: { name: repo.name },
+		props: {
+			repo,
+			readme: snapshot.readmeHtml[repo.name],
+			tree: snapshot.trees[repo.name],
+			commit: snapshot.commits[repo.name],
+			htmlUrl: snapshot.htmlUrl,
+		},
+	}));
+}
+
+const { repo, readme, tree, commit, htmlUrl } = Astro.props;
+---
+
+<XpLayout title={repo.name} description={repo.description ?? `${repo.name} by ${site.name}`}>
+	<main class="page-stage">
+		<Window id="ie" title="Internet Explorer" icon="ie" mode="page">
+			<BrowserFrame mode="page" address={`${htmlUrl}/${repo.name}`} back="/github">
+				<GitHubRepoBody repo={repo} login={site.handle} readme={readme} tree={tree} commit={commit} level={1} />
+			</BrowserFrame>
+		</Window>
+	</main>
+</XpLayout>

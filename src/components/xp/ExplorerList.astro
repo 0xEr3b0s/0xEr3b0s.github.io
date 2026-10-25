@@ -1,0 +1,98 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { categories } from '../../data/site';
+import Icon from './Icon.astro';
+import StatusBadge from './StatusBadge.astro';
+import { accessOf, statusBucket } from '../../scripts/filter';
+
+interface Props {
+	projects: CollectionEntry<'projects'>[];
+	/** Heading level of the page title; group headings use level + 1. */
+	level?: 1 | 2;
+}
+
+const { projects, level = 2 } = Astro.props;
+const Title = `h${level}` as 'h1' | 'h2';
+const GroupTitle = `h${level + 1}` as 'h2' | 'h3';
+const sorted = [...projects].sort((a, b) => a.data.order - b.data.order);
+const featured = sorted.filter((p) => p.data.featured);
+const rest = sorted.filter((p) => !p.data.featured);
+
+const groups = [
+	{ id: 'featured', label: 'Featured', items: featured },
+	...categories.map((c) => ({ id: c.id, label: c.label, items: rest.filter((p) => p.data.category === c.id) })),
+].filter((g) => g.items.length > 0);
+
+const statusChips = [
+	{ value: 'all', label: 'All' },
+	{ value: 'in-progress', label: 'In progress' },
+	{ value: 'completed', label: 'Completed' },
+	{ value: 'planned', label: 'Planned' },
+];
+const accessChips = [
+	{ value: 'all', label: 'All' },
+	{ value: 'public', label: 'Public' },
+	{ value: 'private', label: 'Private' },
+];
+const filterGroups = [
+	{ id: 'status', label: 'Status', chips: statusChips },
+	{ id: 'access', label: 'Access', chips: accessChips },
+];
+
+const categoryLabel = (id: string) => categories.find((c) => c.id === id)?.label ?? id;
+---
+
+<div class="explorer">
+	<Title class="pp-title">Projects</Title>
+	<p class="ex-hint">Click a project to open it.</p>
+	<div class="project-filters">
+		{
+			filterGroups.map((fg) => (
+				<div class="pf-group" role="group" aria-label={`Filter by ${fg.label.toLowerCase()}`}>
+					<span class="pf-label" aria-hidden="true">{fg.label}</span>
+					{fg.chips.map((c) => (
+						<button type="button" class="pf-chip" data-filter={fg.id} data-filter-value={c.value} aria-pressed={c.value === 'all' ? 'true' : 'false'}>
+							{c.label}
+						</button>
+					))}
+				</div>
+			))
+		}
+	</div>
+	<p class="ex-total" aria-hidden="true">Showing {projects.length} of {projects.length} projects</p>
+	<p class="sr-only ex-result" role="status" aria-live="polite"></p>
+	<p class="ex-empty" hidden>No projects match these filters.</p>
+	<div class="explorer-list">
+		{
+			groups.map((g) => (
+				<section class="ex-group">
+					<GroupTitle class="ex-group-title">
+						{g.id === 'featured' && <span aria-hidden="true">★ </span>}
+						{g.label} <span class="ex-count">({g.items.length})</span>
+					</GroupTitle>
+					<ul class="ex-rows">
+						{g.items.map((p) => (
+							<li>
+								<a class="ex-row" href={`/projects/${p.id}`} data-project={p.id} data-status={statusBucket(p.data.status)} data-access={accessOf(p.data.github)}>
+									<Icon name="doc" size={32} />
+									<span class="ex-main">
+										<span class="ex-head">
+											<span class="ex-name">{p.data.title}</span>
+											<StatusBadge status={p.data.status} />
+											{p.data.featured && <span class="badge badge-featured">featured</span>}
+										</span>
+										<span class="ex-desc">{p.data.description}</span>
+										<span class="ex-tech mono">
+											{g.id === 'featured' ? `${categoryLabel(p.data.category)} / ` : ''}
+											{p.data.technologies.join(', ')}
+										</span>
+									</span>
+								</a>
+							</li>
+						))}
+					</ul>
+				</section>
+			))
+		}
+	</div>
+</div>

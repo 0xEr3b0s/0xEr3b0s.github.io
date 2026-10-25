@@ -1,0 +1,94 @@
+---
+import type { CommitInfo, RepoCard, TreeEntry } from '../../data/github-snapshot';
+import { langClass, relativeAge } from '../../scripts/ghformat';
+
+interface Props {
+	repo: RepoCard;
+	login: string;
+	readme?: string;
+	tree?: TreeEntry[];
+	commit?: CommitInfo;
+	level?: 1 | 2;
+}
+
+const { repo, login, readme, tree = [], commit, level = 1 } = Astro.props;
+const Title = `h${level}` as 'h1' | 'h2';
+const now = new Date();
+const tabs = ['Code', 'Issues', 'Pull Requests', 'Wiki', 'Graphs'];
+const newTab = { target: '_blank', rel: 'noopener noreferrer' } as const;
+---
+
+<div class="gh">
+	<p class="gh-crumbs"><a href="/github" data-gh-index>All repositories</a></p>
+	<header class="gh-head">
+		<Title class="gh-title"><span class="gh-owner">{login}</span> / <strong>{repo.name}</strong></Title>
+		<p class="gh-pills">
+			<span class="gh-pill"><span aria-hidden="true">★ </span>Star <b>{repo.stars}</b></span>
+			<span class="gh-pill">Fork <b>{repo.forks}</b></span>
+		</p>
+	</header>
+	{repo.description && <p class="gh-desc">{repo.description}</p>}
+	{repo.topics.length > 0 && (
+		<ul class="gh-topics" aria-label="Topics">
+			{repo.topics.map((t) => <li class="gh-topic">{t}</li>)}
+		</ul>
+	)}
+	<p class="gh-meta">
+		{repo.language && (<span class="gh-lang"><span class={`gh-dot ${langClass(repo.language)}`} aria-hidden="true"></span>{repo.language}</span>)}
+		{repo.pushedAt && <span>Updated {relativeAge(repo.pushedAt, now)}</span>}
+		<a href={repo.htmlUrl} {...newTab}>Open on GitHub<span class="sr-only"> (opens in new tab)</span></a>
+	</p>
+
+	<div class="gh-tabs" aria-hidden="true">
+		{tabs.map((t) => <span class={t === 'Code' ? 'gh-tab is-active' : 'gh-tab'}>{t}</span>)}
+	</div>
+
+	{commit && (
+		<div class={tree.length > 0 ? 'gh-commit' : 'gh-commit is-closed'}>
+			<a class="gh-commit-msg" href={commit.htmlUrl} {...newTab}>{commit.message.split('\n')[0]}<span class="sr-only"> (opens in new tab)</span></a>
+			<span class="gh-commit-meta">
+				<span class="mono">{commit.sha.slice(0, 7)}</span>
+				{commit.date && <span>{relativeAge(commit.date, now)}</span>}
+			</span>
+		</div>
+	)}
+
+	{tree.length > 0 && (
+		<div class="gh-files-wrap">
+			<table class="gh-files">
+				<caption class="sr-only">Files in {repo.name}</caption>
+				<thead><tr><th scope="col" class="sr-only">Name</th></tr></thead>
+				<tbody>
+					{tree.map((e) => (
+						<tr>
+							<td>
+								<a href={e.htmlUrl} {...newTab}>
+									<svg class={`gh-fileicon ${e.type === 'dir' ? 'is-dir' : 'is-file'}`} width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+										{e.type === 'dir'
+											? <path d="M1 3h5l1.5 1.5H15V13H1z" />
+											: <path d="M3 1h7l3 3v11H3z" />}
+									</svg>
+									{e.name}<span class="sr-only"> ({e.type === 'dir' ? 'folder' : 'file'}, opens in new tab)</span>
+								</a>
+							</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
+		</div>
+	)}
+
+	<div class="gh-panel">
+		<div class="gh-panel-head">
+			<svg class="gh-fileicon is-file" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 1h7l3 3v11H3z" /></svg>
+			README.md
+		</div>
+		{
+			readme ? (
+				<div class="gh-readme" set:html={readme} />
+			) : (
+				<p class="gh-note gh-note-flat">This repository has no README.</p>
+			)
+		}
+	</div>
+</div>
