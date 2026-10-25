@@ -9,7 +9,7 @@ const projects = await getCollection('projects');
 ---
 
 <XpLayout title="Projects" description="Projects by 0xEr3b0s.">
-	<main class="page-stage">
+	<main class="page-stage" id="main" tabindex="-1">
 		<Window id="ie" title="Internet Explorer" icon="ie" mode="page">
 			<BrowserFrame mode="page" address="http://0xer3b0s/projects" back="/">
 				<ExplorerList projects={projects} level={1} />

@@ -20,11 +20,11 @@ const BUCKETS: Record<string, StatusBucket> = {
 	maintained: 'in-progress',
 	experimental: 'in-progress',
 	completed: 'completed',
-	archived: 'completed',
+	archived: 'planned',
 	planned: 'planned',
 };
 
-/** Every project status lands in exactly one chip. Unknown statuses count as in progress. */
+/** Every project status lands in exactly one chip; archived is not finished work, so it is not "completed". Unknown statuses count as in progress. */
 export function statusBucket(status: string): StatusBucket {
 	return BUCKETS[status] ?? 'in-progress';
 }

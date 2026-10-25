@@ -4,12 +4,18 @@ import Window from '../components/xp/Window.astro';
 ---
 
 <XpLayout title="404" description="Page not found.">
-	<main class="page-stage">
+	<main class="page-stage" id="main" tabindex="-1">
 		<Window id="error" title="Error" icon="doc" mode="page">
 			<div class="doc">
 				<h1 class="doc-title">404 - page not found</h1>
 				<p>The page <span class="mono">{Astro.url.pathname}</span> does not exist.</p>
 				<p class="pp-links"><a href="/">[back to the desktop]</a></p>
+				<ul>
+					<li><a href="/">Home</a></li>
+					<li><a href="/projects">Projects</a></li>
+					<li><a href="/about">About</a></li>
+					<li><a href="/github">GitHub</a></li>
+				</ul>
 			</div>
 		</Window>
 	</main>

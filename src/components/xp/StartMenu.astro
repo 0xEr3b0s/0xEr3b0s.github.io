@@ -29,7 +29,7 @@ const linkApps = apps.filter((a) => a.external);
 			{
 				linkApps.map((a) => (
 					<li>
-						<a class="start-item" href={a.href} data-open={a.windowId ?? undefined} target="_blank" rel="noopener noreferrer">
+						<a class="start-item" href={a.href} data-open={a.windowId ?? undefined}>
 							<Icon name={a.icon} size={24} />
 							<span>{a.label}</span>
 						</a>

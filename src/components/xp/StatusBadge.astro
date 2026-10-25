@@ -1,8 +1,14 @@
 ---
+import { statusLegend } from '../../data/site';
+import { statusBucket } from '../../scripts/filter';
+
 interface Props {
 	status: string;
 }
-const { status } = Astro.props;
+
+const bucket = statusBucket(Astro.props.status);
+const raw = statusLegend.find((s) => s.id === bucket)?.label ?? bucket;
+const label = raw.charAt(0).toUpperCase() + raw.slice(1);
 ---
 
-<span class={`badge status-${status}`}>{status}</span>
+<span class={`badge status-${bucket}`}>{label}</span>

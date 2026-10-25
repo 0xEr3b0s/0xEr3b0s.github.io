@@ -2,7 +2,7 @@
 import Icon from './Icon.astro';
 ---
 
-<div class="taskbar" role="toolbar" aria-label="Taskbar">
+<div class="taskbar">
 	<button type="button" class="start-button" id="start-button" aria-expanded="false" aria-controls="start-menu">
 		<Icon name="flag" size={20} />
 		<span>start</span>
@@ -12,6 +12,7 @@ import Icon from './Icon.astro';
 			<a href="/">Desktop</a>
 			<a href="/projects">Projects</a>
 			<a href="/about">About</a>
+			<a href="/github">GitHub</a>
 		</nav>
 	</noscript>
 	<div class="taskbar-windows" id="taskbar-windows"></div>

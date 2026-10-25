@@ -62,7 +62,7 @@ function onClick(e: MouseEvent): void {
 }
 
 function onKeydown(e: KeyboardEvent): void {
-	if (e.key !== 'Escape' || !(e.target instanceof Element)) return;
+	if (e.key !== 'Escape' || e.defaultPrevented || !(e.target instanceof Element)) return;
 	if (e.target.closest('input, textarea')) return;
 	const m = windowOf(e.target);
 	if (m) closeWindow(m);

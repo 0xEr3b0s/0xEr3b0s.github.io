@@ -10,7 +10,7 @@ const snapshot = await getGitHubSnapshot(site.handle);
 ---
 
 <XpLayout title="GitHub" description={`Public repositories by ${site.name}.`}>
-	<main class="page-stage">
+	<main class="page-stage" id="main" tabindex="-1">
 		<Window id="ie" title="Internet Explorer" icon="ie" mode="page">
 			<BrowserFrame mode="page" address={snapshot.htmlUrl} back="/">
 				<GitHubIndexBody snapshot={snapshot} level={1} />

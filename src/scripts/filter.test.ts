@@ -28,7 +28,7 @@ test('combined filters are ANDed', () => {
 test('every status maps to one bucket', () => {
 	assert.equal(statusBucket('active'), 'in-progress');
 	assert.equal(statusBucket('maintained'), 'in-progress');
-	assert.equal(statusBucket('archived'), 'completed');
+	assert.equal(statusBucket('archived'), 'planned');
 	assert.equal(statusBucket('planned'), 'planned');
 	assert.equal(statusBucket('weird'), 'in-progress');
 });

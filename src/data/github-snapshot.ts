@@ -109,6 +109,7 @@ function rewriteImage(tag: string, rawBase: string): string {
 	let out = tag.replace(/src="([^"]*)"/, (m, url) => (RELATIVE.test(url) ? m : `src="${rawBase}${url}"`));
 	// Match the attribute (space before the name), not "?alt=" inside a URL or "data-alt=".
 	if (!/\sreferrerpolicy=/i.test(out)) out = out.replace(/^<img/i, '<img referrerpolicy="no-referrer"');
+	if (!/\sloading=/i.test(out)) out = out.replace(/^<img/i, '<img loading="lazy"');
 	if (!/\salt=/i.test(out)) out = out.replace(/^<img/i, '<img alt=""');
 	return out;
 }

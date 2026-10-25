@@ -33,6 +33,13 @@ function onKeydown(e: KeyboardEvent, button: HTMLElement, menu: HTMLElement): vo
 	if (e.key === 'Escape' && isOpen(menu)) closeMenu(button, menu, true);
 }
 
+function onFocusOut(e: FocusEvent, button: HTMLElement, menu: HTMLElement): void {
+	const next = e.relatedTarget;
+	if (!(next instanceof Node) || !isOpen(menu)) return;
+	if (menu.contains(next) || button.contains(next)) return;
+	closeMenu(button, menu, false);
+}
+
 export function initStartMenu(): void {
 	const p = parts();
 	if (!p) return;
@@ -41,6 +48,8 @@ export function initStartMenu(): void {
 		if (isOpen(menu)) closeMenu(button, menu, false);
 		else openMenu(button, menu);
 	});
+	menu.addEventListener('focusout', (e) => onFocusOut(e, button, menu));
+	button.addEventListener('focusout', (e) => onFocusOut(e, button, menu));
 	document.addEventListener('click', (e) => onDocumentClick(e, button, menu));
 	document.addEventListener('keydown', (e) => onKeydown(e, button, menu));
 }

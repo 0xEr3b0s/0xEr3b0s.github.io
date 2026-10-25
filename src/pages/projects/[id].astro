@@ -16,7 +16,7 @@ const stats = project.data.github ? await getRepoStats([project.data.github]) : 
 ---
 
 <XpLayout title={project.data.title} description={project.data.description}>
-	<main class="page-stage">
+	<main class="page-stage" id="main" tabindex="-1">
 		<Window id="ie" title="Internet Explorer" icon="ie" mode="page">
 			<BrowserFrame mode="page" address={`http://0xer3b0s/projects/${project.id}`}>
 				<ProjectBody project={project} stat={stats[project.data.github]} level={1} />

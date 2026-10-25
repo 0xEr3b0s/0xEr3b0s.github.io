@@ -45,6 +45,11 @@ test('enhanceReadme still adds alt when the src URL merely contains alt=', () =>
 	assert.match(out, /\salt=""/);
 });
 
+test('enhanceReadme marks images lazy-loading', () => {
+	const out = enhanceReadme('<img src="https://cdn/p.png">', 'a/b', 'main');
+	assert.match(out, /\sloading="lazy"/);
+});
+
 test('enhanceReadme keeps an existing alt', () => {
 	const out = enhanceReadme('<img src="https://cdn/p.png" alt="pic">', 'a/b', 'main');
 	assert.match(out, /alt="pic"/);
