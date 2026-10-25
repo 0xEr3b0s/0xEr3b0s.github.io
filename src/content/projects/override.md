@@ -4,7 +4,7 @@ description: "A harder, better-defended binary-exploitation wargame — the sequ
 status: "active"
 year: 2026
 category: "offensive"
-featured: true
+featured: false
 order: 4
 technologies:
   - C

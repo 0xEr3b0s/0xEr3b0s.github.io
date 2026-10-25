@@ -4,8 +4,8 @@ description: "A C compiler written from scratch in C++ — lexer, parser and cod
 status: "active"
 year: 2026
 category: "systems"
-featured: false
-order: 15
+featured: true
+order: 2
 technologies:
   - C++
   - CMake

@@ -4,8 +4,8 @@ description: "A Unix shell implemented from scratch in C — parsing, pipes, red
 status: "completed"
 year: 2025
 category: "systems"
-featured: false
-order: 16
+featured: true
+order: 3
 technologies:
   - C
   - Linux

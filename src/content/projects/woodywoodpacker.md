@@ -1,7 +1,7 @@
 ---
 title: "WoodyWoodpacker"
 description: "An ELF packer — encrypting a binary's code and prepending a stub that decrypts and runs it at load time."
-status: "planned"
+status: "active"
 year: 2026
 category: "offensive"
 featured: false

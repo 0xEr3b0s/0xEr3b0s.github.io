@@ -9,6 +9,7 @@ order: 10
 technologies:
   - C
   - ICMP
+github: "https://github.com/0xEr3b0s/ft_ping"
 ---
 
 Sends echo requests, awaits replies, and reports round-trip times and packet

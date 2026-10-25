@@ -1,10 +1,10 @@
 ---
 title: "RainFall"
-description: "A binary-exploitation wargame — a ladder of vulnerable SUID binaries, each one a step toward the next."
+description: "A binary-exploitation wargame — a ladder of vulnerable SUID binaries, each one a step toward the next. (2/10 levels done)"
 status: "active"
 year: 2026
 category: "offensive"
-featured: true
+featured: false
 order: 3
 technologies:
   - C

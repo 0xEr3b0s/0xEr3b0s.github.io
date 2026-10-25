@@ -4,7 +4,7 @@ description: "A security wargame in the classic level-by-level ladder style — 
 status: "active"
 year: 2026
 category: "offensive"
-featured: true
+featured: false
 order: 2
 technologies:
   - Linux
