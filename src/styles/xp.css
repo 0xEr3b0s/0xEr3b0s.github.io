@@ -1542,3 +1542,110 @@ html:not(.js) .copy-btn {
 		order: -1;
 	}
 }
+
+/* ---------- Terminal replay (.tr-*) ---------- */
+
+.tr {
+	--tr-bg: #0c0c0c;
+	--tr-out: #d0d0d0;
+	--tr-err: #ff8f8f;
+	--tr-dim: #9a9a9a;
+	--tr-accent: #6fdc6f;
+	--tr-red: #ff6b6b;
+	max-width: 100%;
+	margin: var(--s2) 0;
+}
+
+.tr-bar {
+	padding: var(--s1) var(--s2);
+	font-size: var(--fs-sm);
+	font-weight: bold;
+	color: var(--xp-white);
+	background: linear-gradient(180deg, var(--xp-title-a) 0%, var(--xp-title-c) 100%);
+	border: 1px solid var(--xp-frame);
+	border-bottom: 0;
+	border-radius: var(--r-win) var(--r-win) 0 0;
+}
+
+.tr-screen {
+	position: relative;
+	height: 16rem;
+	padding: var(--s2) var(--s3);
+	overflow-y: auto;
+	font-family: var(--font-mono);
+	font-size: var(--fs-sm);
+	line-height: 1.5;
+	color: var(--tr-out);
+	background: var(--tr-bg);
+	border: 1px solid var(--xp-frame);
+}
+
+.tr-screen:focus-visible,
+.tr-btn:focus-visible {
+	outline: 2px solid var(--xp-select);
+	outline-offset: 2px;
+}
+
+.tr-line {
+	min-height: 1.5em;
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+}
+
+.tr-out { color: var(--tr-out); }
+.tr-err { color: var(--tr-err); }
+.tr-dim { color: var(--tr-dim); }
+.tr-accent { color: var(--tr-accent); }
+.tr-red { color: var(--tr-red); }
+
+.tr-cursor {
+	display: inline-block;
+	width: 0.6em;
+	height: 1.1em;
+	vertical-align: text-bottom;
+	background: var(--tr-out);
+}
+
+/* While playing, the animated layer is shown and the static transcript stays for assistive tech. */
+.tr-live { display: none; }
+.tr[data-state="playing"] .tr-live,
+.tr[data-state="paused"] .tr-live { display: block; }
+.tr[data-state="playing"] .tr-static,
+.tr[data-state="paused"] .tr-static {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+}
+
+.tr-controls {
+	display: flex;
+	gap: var(--s2);
+	min-height: 2rem;
+	padding: var(--s1) 0;
+}
+
+.tr-controls:not(:has(.tr-btn:not([hidden]))) { min-height: 0; padding: 0; }
+
+.tr-btn {
+	min-width: 4.5rem;
+	min-height: 1.5rem;
+	padding: var(--s1) var(--s3);
+	font: inherit;
+	font-size: var(--fs-sm);
+	color: var(--xp-text);
+	background: linear-gradient(180deg, var(--xp-white) 0%, var(--xp-face) 100%);
+	border: 1px solid var(--xp-text);
+	border-radius: var(--r-btn);
+	cursor: pointer;
+}
+
+.tr-btn:hover { background: var(--pf-hover); }
+.tr-btn[hidden] { display: none; }
+
+.tr-caption {
+	margin: 0;
+	font-size: var(--fs-xs);
+	color: var(--xp-text-muted);
+}

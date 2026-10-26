@@ -3,6 +3,8 @@ import { render, type CollectionEntry } from 'astro:content';
 import type { RepoStat } from '../../data/github';
 import { categories } from '../../data/site';
 import StatusBadge from './StatusBadge.astro';
+import TerminalReplay from './TerminalReplay.astro';
+import { replays } from '../../data/replays';
 
 interface Props {
 	project: CollectionEntry<'projects'>;
@@ -16,6 +18,7 @@ const { data } = project;
 const { Content } = await render(project);
 const Title = `h${level}` as 'h1' | 'h2';
 const Sub = `h${level + 1}` as 'h2' | 'h3';
+const replay = replays[project.id];
 const categoryLabel = categories.find((c) => c.id === data.category)?.label ?? data.category;
 
 const datePart = stat?.lastActivity?.slice(0, 10) ?? '';
@@ -60,6 +63,14 @@ if (stat?.stars != null) facts.push(`${stat.stars.toLocaleString('en-US')} stars
 		)
 	}
 	<div class="pp-prose"><Content /></div>
+	{
+		replay && (
+			<section class="pp-section">
+				<Sub class="pp-sub">Terminal replay</Sub>
+				<TerminalReplay replay={replay} />
+			</section>
+		)
+	}
 	{
 		data.technologies.length > 0 && (
 			<p class="pp-stack">

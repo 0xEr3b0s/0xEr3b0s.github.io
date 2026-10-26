@@ -1,5 +1,6 @@
 // Internet Explorer window: one instance, in-window history of opened projects.
-import { cleanToken, find, findAll } from '../dom';
+import { cleanToken, find, findAll, safely } from '../dom';
+import { initReplays } from '../replay';
 import { parseAddress } from './address';
 import { ghIndexTemplate, ghLogin, loadRepo, repoAllowlist } from './github';
 import { allowRepo, GH_INDEX, ghRepoId, hashFor, pageFromHash, parseGhAddress, repoOfId } from './pages';
@@ -106,7 +107,11 @@ function announce(win: HTMLElement, text: string): void {
 
 function renderBody(m: Managed, id: string, page: Page, body: HTMLElement): void {
 	body.removeAttribute('aria-busy');
-	if (page.tpl) return body.replaceChildren(page.tpl.content.cloneNode(true));
+	if (page.tpl) {
+		body.replaceChildren(page.tpl.content.cloneNode(true));
+		safely(() => initReplays(body));
+		return;
+	}
 	if (!page.repo) return;
 	const stillCurrent = () => current(nav) === id;
 	void loadRepo(body, page.repo, stillCurrent, (msg) => announce(m.el, msg));
