@@ -1,7 +1,7 @@
 ---
 title: "ft_ping"
 description: "A reimplementation of ping using raw sockets and ICMP."
-status: "active"
+status: "completed"
 year: 2026
 category: "network"
 featured: false

@@ -1,7 +1,7 @@
 ---
 title: "cybersecurity-lab"
 description: "A set of offensive-security modules: ARP-poisoning MITM, OSINT reconnaissance, TOTP, and a hidden service."
-status: "active"
+status: "completed"
 year: 2026
 category: "offensive"
 featured: true
