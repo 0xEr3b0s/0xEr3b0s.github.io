@@ -6,7 +6,7 @@ import GitHubIndexBody from '../../components/xp/GitHubIndexBody.astro';
 import { getGitHubSnapshot } from '../../data/github-snapshot';
 import { site } from '../../data/site';
 
-const snapshot = await getGitHubSnapshot(site.handle);
+const snapshot = await getGitHubSnapshot(site.githubLogin);
 ---
 
 <XpLayout title="GitHub" description={`Public repositories by ${site.name}.`}>

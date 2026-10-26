@@ -59,7 +59,7 @@ let snapshot: Promise<GitHubSnapshot> | null = null;
 let tmpSeq = 0;
 
 function headers(accept: string): Record<string, string> {
-	const h: Record<string, string> = { Accept: accept, 'User-Agent': '0xEr3b0s-portfolio-build' };
+	const h: Record<string, string> = { Accept: accept, 'User-Agent': 'nirmata-portfolio-build' };
 	const token = process.env.GITHUB_TOKEN;
 	if (token) h.Authorization = `Bearer ${token}`;
 	return h;

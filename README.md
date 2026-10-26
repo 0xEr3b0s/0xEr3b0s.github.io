@@ -1,6 +1,6 @@
 # Portfolio
 
-0xEr3b0s's personal portfolio — a terminal-styled, GitHub-centered site: black
+nirmata's personal portfolio — a terminal-styled, GitHub-centered site: black
 background, monospace, no gradients, no frameworks fighting the aesthetic.
 Built with [Astro](https://astro.build) as a fully static site (no server, no
 database) so it can be hosted for free and stays fast by default.

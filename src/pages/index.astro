@@ -15,13 +15,13 @@ import { profile, site } from '../data/site';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 const stats = await getRepoStats(projects.map((p) => p.data.github).filter(Boolean));
-const snapshot = await getGitHubSnapshot(site.handle);
+const snapshot = await getGitHubSnapshot(site.githubLogin);
 ---
 
 <XpLayout desktop>
 	<main id="main" tabindex="-1">
 		<div class="desktop" id="desktop">
-			<h1 class="sr-only">0xEr3b0s - desktop</h1>
+			<h1 class="sr-only">nirmata - desktop</h1>
 			<DesktopIcons />
 			<aside class="id-card" aria-label={`About ${site.name}`}>
 				<p class="id-name">{site.name}</p>

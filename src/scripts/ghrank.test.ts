@@ -5,7 +5,7 @@ import { rankRepos, slugFromUrl } from './ghrank.ts';
 const repo = (name: string, stars = 0, pushedAt: string | null = null) => ({ slug: `o/${name}`, stars, pushedAt });
 
 test('slugFromUrl normalises github URLs', () => {
-	assert.equal(slugFromUrl('https://github.com/0xEr3b0s/RainFall'), '0xer3b0s/rainfall');
+	assert.equal(slugFromUrl('https://github.com/0xnirmata/RainFall'), '0xnirmata/rainfall');
 	assert.equal(slugFromUrl('https://github.com/o/x.git'), 'o/x');
 	assert.equal(slugFromUrl('https://example.com/o/x'), null);
 	assert.equal(slugFromUrl(''), null);

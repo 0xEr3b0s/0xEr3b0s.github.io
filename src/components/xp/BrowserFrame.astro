@@ -7,7 +7,7 @@ interface Props {
 	back?: string;
 }
 
-const { mode, address = 'http://0xer3b0s/', back = '/projects' } = Astro.props;
+const { mode, address = 'http://nirmata/', back = '/projects' } = Astro.props;
 const menus = ['File', 'Edit', 'View', 'Favorites', 'Tools', 'Help'];
 const tools = [
 	{ action: 'ie-back', label: 'Back', href: back, path: 'M12 5l-6 7 6 7M6 12h12', page: 'link' },

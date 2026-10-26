@@ -11,7 +11,7 @@ technologies:
   - x86-64
   - ELF
   - Cryptography
-github: "https://github.com/0xEr3b0s/woody_woodpacker"
+github: "https://github.com/0xnirmata/woody_woodpacker"
 ---
 
 A packer for ELF executables: it takes a working binary, encrypts its code, and

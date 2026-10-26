@@ -11,7 +11,7 @@ technologies:
   - K3s
   - Vagrant
   - Argo CD
-github: "https://github.com/0xEr3b0s/IoT"
+github: "https://github.com/0xnirmata/IoT"
 ---
 
 Small clusters assembled with K3s and K3d inside Vagrant-provisioned VMs,

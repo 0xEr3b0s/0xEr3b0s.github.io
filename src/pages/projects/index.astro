@@ -8,10 +8,10 @@ import ExplorerList from '../../components/xp/ExplorerList.astro';
 const projects = await getCollection('projects');
 ---
 
-<XpLayout title="Projects" description="Projects by 0xEr3b0s.">
+<XpLayout title="Projects" description="Projects by nirmata.">
 	<main class="page-stage" id="main" tabindex="-1">
 		<Window id="ie" title="Internet Explorer" icon="ie" mode="page">
-			<BrowserFrame mode="page" address="http://0xer3b0s/projects" back="/">
+			<BrowserFrame mode="page" address="http://nirmata/projects" back="/">
 				<ExplorerList projects={projects} level={1} />
 			</BrowserFrame>
 		</Window>

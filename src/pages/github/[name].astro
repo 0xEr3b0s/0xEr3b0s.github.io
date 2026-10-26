@@ -7,7 +7,7 @@ import { getGitHubSnapshot } from '../../data/github-snapshot';
 import { site } from '../../data/site';
 
 export async function getStaticPaths() {
-	const snapshot = await getGitHubSnapshot(site.handle);
+	const snapshot = await getGitHubSnapshot(site.githubLogin);
 	return snapshot.repos.map((repo) => ({
 		params: { name: repo.name },
 		props: {
@@ -27,7 +27,7 @@ const { repo, readme, tree, commit, htmlUrl } = Astro.props;
 	<main class="page-stage" id="main" tabindex="-1">
 		<Window id="ie" title="Internet Explorer" icon="ie" mode="page">
 			<BrowserFrame mode="page" address={`${htmlUrl}/${repo.name}`} back="/github">
-				<GitHubRepoBody repo={repo} login={site.handle} readme={readme} tree={tree} commit={commit} level={1} />
+				<GitHubRepoBody repo={repo} login={site.githubLogin} readme={readme} tree={tree} commit={commit} level={1} />
 			</BrowserFrame>
 		</Window>
 	</main>

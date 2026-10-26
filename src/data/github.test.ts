@@ -3,19 +3,19 @@ import assert from 'node:assert/strict';
 import { parseLastPage, repoSlug } from './github.ts';
 
 test('repoSlug extracts owner/name from a normal URL', () => {
-	assert.equal(repoSlug('https://github.com/0xEr3b0s/RainFall'), '0xEr3b0s/RainFall');
+	assert.equal(repoSlug('https://github.com/0xnirmata/RainFall'), '0xnirmata/RainFall');
 });
 
 test('repoSlug strips a .git suffix', () => {
-	assert.equal(repoSlug('https://github.com/0xEr3b0s/RainFall.git'), '0xEr3b0s/RainFall');
+	assert.equal(repoSlug('https://github.com/0xnirmata/RainFall.git'), '0xnirmata/RainFall');
 });
 
 test('repoSlug ignores a #anchor', () => {
-	assert.equal(repoSlug('https://github.com/0xEr3b0s/RainFall#readme'), '0xEr3b0s/RainFall');
+	assert.equal(repoSlug('https://github.com/0xnirmata/RainFall#readme'), '0xnirmata/RainFall');
 });
 
 test('repoSlug ignores a ?query', () => {
-	assert.equal(repoSlug('https://github.com/0xEr3b0s/RainFall?tab=readme'), '0xEr3b0s/RainFall');
+	assert.equal(repoSlug('https://github.com/0xnirmata/RainFall?tab=readme'), '0xnirmata/RainFall');
 });
 
 test('repoSlug returns null for a non-github string', () => {
@@ -35,7 +35,7 @@ test('repoSlug is anchored and rejects github.com in a path segment', () => {
 });
 
 test('repoSlug accepts a www. host', () => {
-	assert.equal(repoSlug('https://www.github.com/0xEr3b0s/RainFall'), '0xEr3b0s/RainFall');
+	assert.equal(repoSlug('https://www.github.com/0xnirmata/RainFall'), '0xnirmata/RainFall');
 });
 
 test('parseLastPage returns null for a null header', () => {
