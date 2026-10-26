@@ -10,7 +10,7 @@ technologies:
   - C++
   - CMake
   - Compilers
-github: "https://github.com/0xnirmata/c_compiler"
+github: "https://github.com/0xNirmata/c_compiler"
 problem: >
   Understanding a language from the outside — writing programs in it — only goes so
   far. Building the compiler itself forces a much deeper account of how source text

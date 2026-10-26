@@ -10,7 +10,7 @@ technologies:
   - C
   - Linux
   - POSIX
-github: "https://github.com/0xnirmata/Minishell"
+github: "https://github.com/0xNirmata/Minishell"
 problem: >
   A shell looks simple from the outside — type a command, watch it run. Underneath
   it is process management, signal handling, and a parser that has to get quoting,

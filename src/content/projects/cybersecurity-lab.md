@@ -11,7 +11,7 @@ technologies:
   - Python
   - Docker
   - Networking
-github: "https://github.com/0xnirmata/cybersecurity-lab"
+github: "https://github.com/0xNirmata/cybersecurity-lab"
 ---
 
 An ongoing collection of independent modules, each one a self-contained
@@ -22,7 +22,7 @@ offensive-security exercise.
 The flagship module in this repository: a full-duplex ARP-poisoning
 man-in-the-middle tool written in C, run against a dedicated Docker lab.
 
-[View the inquisitor module →](https://github.com/0xnirmata/cybersecurity-lab/tree/main/inquisitor)
+[View the inquisitor module →](https://github.com/0xNirmata/cybersecurity-lab/tree/main/inquisitor)
 
 **Current state:**
 

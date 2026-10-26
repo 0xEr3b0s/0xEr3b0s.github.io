@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { enhanceReadme, isValidSlug, sortEntries, type TreeEntry } from './github-snapshot.ts';
 
 test('isValidSlug accepts owner/name', () => {
-	assert.equal(isValidSlug('0xnirmata/RainFall'), true);
+	assert.equal(isValidSlug('0xNirmata/RainFall'), true);
 });
 
 test('isValidSlug rejects a bare name', () => {

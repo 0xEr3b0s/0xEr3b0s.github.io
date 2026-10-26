@@ -1,16 +1,16 @@
 export const site = {
-	name: 'nirmata',
-	// Display name only; anything that talks to GitHub uses githubLogin.
-	handle: 'nirmata',
-	// GitHub account the build fetches repos from ("nirmata" is taken on GitHub).
-	githubLogin: '0xnirmata',
-	title: 'nirmata — Systems & Offensive Security',
+	name: '0xNirmata',
+	// Display name, shown in the UI.
+	handle: '0xNirmata',
+	// Same value as handle; used for GitHub API calls and github.com URLs.
+	githubLogin: '0xNirmata',
+	title: '0xNirmata — Systems & Offensive Security',
 	description:
 		'Low-level and offensive-security developer. Red teaming, binary exploitation, systems programming.',
 };
 
 export const links = {
-	github: 'https://github.com/0xnirmata',
+	github: 'https://github.com/0xNirmata',
 	// Fill in later: once set, the Contact section shows it as a mailto link
 	// instead of the "à compléter" placeholder.
 	email: '',

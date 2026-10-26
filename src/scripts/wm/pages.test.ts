@@ -5,7 +5,7 @@ import {
 } from './pages.ts';
 
 const repos = ['RainFall', 'libasm', 'ft_ping'];
-const login = '0xnirmata';
+const login = '0xNirmata';
 
 test('history ids round-trip', () => {
 	assert.equal(repoOfId(ghRepoId('libasm')), 'libasm');
@@ -32,17 +32,17 @@ test('hashFor and pageFromHash agree', () => {
 });
 
 test('github addresses resolve to index, repo or unknown', () => {
-	assert.deepEqual(parseGhAddress('https://github.com/0xnirmata', repos, login), { kind: 'gh-index' });
+	assert.deepEqual(parseGhAddress('https://github.com/0xNirmata', repos, login), { kind: 'gh-index' });
 	assert.deepEqual(parseGhAddress('github.com', repos, login), { kind: 'gh-index' });
-	assert.deepEqual(parseGhAddress('https://github.com/0xnirmata/rainfall?tab=x#y', repos, login), {
+	assert.deepEqual(parseGhAddress('https://github.com/0xNirmata/rainfall?tab=x#y', repos, login), {
 		kind: 'gh-repo', name: 'RainFall',
 	});
 	assert.deepEqual(parseGhAddress('/github/libasm', repos, login), { kind: 'gh-repo', name: 'libasm' });
 	assert.deepEqual(parseGhAddress('https://github.com/someoneelse/rainfall', repos, login), { kind: 'unknown' });
-	assert.deepEqual(parseGhAddress('https://github.com/0xnirmata/nope', repos, login), { kind: 'unknown' });
+	assert.deepEqual(parseGhAddress('https://github.com/0xNirmata/nope', repos, login), { kind: 'unknown' });
 });
 
 test('non-github addresses are not claimed', () => {
-	assert.equal(parseGhAddress('http://nirmata/projects/kfs', repos, login), null);
+	assert.equal(parseGhAddress('http://0xnirmata/projects/kfs', repos, login), null);
 	assert.equal(parseGhAddress('githubber', repos, login), null);
 });

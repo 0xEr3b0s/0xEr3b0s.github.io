@@ -18,7 +18,7 @@ const stats = project.data.github ? await getRepoStats([project.data.github]) : 
 <XpLayout title={project.data.title} description={project.data.description}>
 	<main class="page-stage" id="main" tabindex="-1">
 		<Window id="ie" title="Internet Explorer" icon="ie" mode="page">
-			<BrowserFrame mode="page" address={`http://nirmata/projects/${project.id}`}>
+			<BrowserFrame mode="page" address={`http://0xnirmata/projects/${project.id}`}>
 				<ProjectBody project={project} stat={stats[project.data.github]} level={1} />
 			</BrowserFrame>
 		</Window>

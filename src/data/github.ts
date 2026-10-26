@@ -13,7 +13,7 @@ import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 
 export interface RepoStat {
-	/** owner/name, e.g. "0xnirmata/RainFall". */
+	/** owner/name, e.g. "0xNirmata/RainFall". */
 	slug: string;
 	/** Primary language GitHub detected, or null. */
 	language: string | null;
@@ -44,7 +44,7 @@ let tmpSeq = 0; // keeps concurrent cache writes on distinct temp files
 function headers(): Record<string, string> {
 	const h: Record<string, string> = {
 		Accept: 'application/vnd.github+json',
-		'User-Agent': 'nirmata-portfolio-build',
+		'User-Agent': '0xNirmata-portfolio-build',
 	};
 	const token = process.env.GITHUB_TOKEN;
 	if (token) h.Authorization = `Bearer ${token}`;

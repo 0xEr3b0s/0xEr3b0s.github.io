@@ -41,11 +41,11 @@ function pageFor(id: string): Page | null {
 	if (id === INDEX) {
 		const tpl = document.getElementById('tpl-index');
 		return tpl instanceof HTMLTemplateElement
-			? { tpl, title: 'Projects', address: 'http://nirmata/projects' }
+			? { tpl, title: 'Projects', address: 'http://0xnirmata/projects' }
 			: null;
 	}
 	const tpl = templateFor(id);
-	return tpl ? { tpl, title: tpl.dataset.title ?? id, address: `http://nirmata/projects/${id}` } : null;
+	return tpl ? { tpl, title: tpl.dataset.title ?? id, address: `http://0xnirmata/projects/${id}` } : null;
 }
 
 export function hasProject(id: string): boolean {
